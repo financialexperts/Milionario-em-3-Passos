@@ -2,10 +2,9 @@
   "use strict";
 
   // Lê o número que o aluno digitou numa célula de dinheiro, do jeito
-  // brasileiro ("1.800,00", "1800", "R$ 1.800"). Aqui não tem conta: a
-  // folha só guarda o que o aluno escreve (as contas são feitas no sistema
-  // de cálculo da Financial Experts). Serve pra completar o número quando o
-  // aluno sai da célula ("1.800" vira "1.800,00").
+  // brasileiro ("1.800,00", "1800", "R$ 1.800"). Serve pra completar o
+  // número quando o aluno sai da célula ("1.800" vira "1.800,00") e pra ler
+  // a economia mensal, que vira o aporte da conta dos 65 anos (juros.js).
   //
   // Devolve o número, ou null quando não tem nada ou não deu pra entender.
 

@@ -12,6 +12,17 @@
     return fmtCents.format(v || 0);
   }
 
+  // um valor calculado pela folha, com o "R$": "R$ 1.200,00"
+  function money(v) {
+    return "R$ " + plain(v);
+  }
+
+  // a taxa de juros: 0.1 vira "10%" e 0.085, "8,5%"
+  var fmtPct = new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 2 });
+  function percent(v) {
+    return fmtPct.format(v || 0);
+  }
+
   /* ============ meses ============ */
   var MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
     "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -35,6 +46,8 @@
 
   global.Format = {
     plain: plain,
+    money: money,
+    percent: percent,
     monthYear: monthYear,
     thisMonth: thisMonth,
     esc: esc

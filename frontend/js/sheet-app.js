@@ -15,7 +15,7 @@ window.Session.ready(function (user) {
   var semAnimacao = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ============ a folha ============ */
-  View.mount(el("p-etapas"), el("p-total"), window.Session.fullName);
+  View.mount(el("p-prazo"), el("p-etapas"), el("p-total"), window.Session.fullName);
 
   // a folha do banco, quando é mais nova que a deste navegador, entra no
   // lugar e a tela se redesenha

@@ -4,11 +4,11 @@
   var Etapas = global.Etapas;
 
   // O estado da folha "Se torne um milionário em 3 passos": o que o aluno
-  // escreveu em cada campo. Não toca no DOM e não faz conta nenhuma: a folha
-  // só guarda o que o aluno escreve (as contas são feitas no sistema de
-  // cálculo da Financial Experts). Aqui ficam também o que já foi preenchido
-  // (pras marcas de preenchido e os medidores) e o guardar no navegador; o
-  // guardar no banco é o sync.js.
+  // escreveu em cada campo. Não toca no DOM e não faz conta nenhuma: só
+  // guarda o que o aluno escreve (o valor até os 65 anos sai disso, no
+  // juros.js, e não fica guardado). Aqui ficam também o que já foi
+  // preenchido (pras marcas de preenchido e os medidores) e o guardar no
+  // navegador; o guardar no banco é o sync.js.
   //
   // data:    { id do campo (etapas.js): o texto, do jeito que o aluno
   //          escreveu }. Campo vazio não fica guardado.

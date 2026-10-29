@@ -5,7 +5,8 @@
 
 /* O tom de cada etapa: --c (o texto), --cs (o fundo) e --cb (o desenho e as
    faixas). A 1 é azul, a 2 dourada e a 3 roxa; o verde fica com os
-   resultados (os campos que o aluno preenche com a conta do outro sistema). */
+   resultados (a economia mensal, que o aluno calcula, e o valor até os 65
+   anos, que a folha calcula). */
 .etapa--1,.ekey--1{--c:var(--curto);--cs:var(--curto-soft);--cb:var(--curto-box)}
 .etapa--2,.ekey--2{--c:var(--medio);--cs:var(--medio-soft);--cb:var(--medio-box)}
 .etapa--3,.ekey--3{--c:var(--violet);--cs:var(--violet-soft);--cb:var(--violet)}
@@ -28,8 +29,8 @@
 /* etapa completa: o selo verde no quadrinho */
 .ekey.is-done .ekey__tile::after{content:"";position:absolute;right:-6px;bottom:-6px;width:18px;height:18px;border-radius:50%;border:2px solid var(--cs);background:var(--accent) var(--badge-check) center/10px no-repeat;animation:badge-pop .45s var(--spring)}
 
-/* como preencher, em 2 passos */
-.phow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 0;padding:0;list-style:none;counter-reset:passo}
+/* como preencher, em 3 passos */
+.phow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0 0;padding:0;list-style:none;counter-reset:passo}
 .phow__step{display:flex;align-items:flex-start;gap:12px;min-width:0;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm);counter-increment:passo}
 .phow__step > div{min-width:0}
 .phow__title{font-family:var(--ff-display);font-weight:700;font-size:15.5px;letter-spacing:-.01em;line-height:1.3}
@@ -48,6 +49,13 @@
 .savestate[data-state="cloud"]{border-color:color-mix(in srgb,var(--accent-ink) 35%,var(--line));color:var(--accent-ink)}
 .savestate[data-state="local"]{border-color:color-mix(in srgb,var(--warm) 45%,var(--line));color:color-mix(in srgb,var(--warm) 75%,var(--ink));cursor:help}
 .savestate:is([data-state="saving"],[data-state="loading"]) .ico-hands{animation:ico-spin 1.2s linear infinite}
+
+/* ---------- Até os 65 anos ---------- */
+/* Antes das etapas: o que é o prazo, e ao lado quanto falta e a taxa (no
+   celular, um embaixo do outro). */
+.pprazo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);align-items:center;gap:16px 28px;margin-bottom:16px;padding:20px 22px;border-top:4px solid var(--amber)}
+.pprazo__title{font-size:clamp(19px,2.2vw,22px);line-height:1.2}
+.pprazo__lead{margin-top:4px;max-width:58ch;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
 
 /* ---------- As 3 etapas ---------- */
 /* Como na folha: a faixa da etapa à esquerda ("Etapa 1", o número grande e
@@ -85,8 +93,18 @@
 @media (min-width:561px){
   .frow--2:has(> .ffield--money:first-child + .ffield--text){grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
 }
-/* um produto: o nome, a marca nova e os dois preços, com a seta entre eles */
-.frow--produto{grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,.85fr) auto minmax(0,.85fr)}
+/* Um produto: o nome, a marca nova e o consumo em cima; os dois preços
+   embaixo, com a seta entre eles. As colunas acertam as larguras: a marca
+   fica da largura do nome, o consumo (só um número) menor, e os dois preços
+   iguais. */
+.frow--produto{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.5fr) auto minmax(0,.5fr) minmax(0,.5fr) minmax(0,1.5fr);grid-template-areas:"produto produto marca marca marca marca consumo" "atual atual atual seta novo novo novo"}
+.frow--produto > :nth-child(1){grid-area:produto}
+.frow--produto > :nth-child(2){grid-area:marca}
+.frow--produto > :nth-child(3){grid-area:consumo}
+.frow--produto > :nth-child(4){grid-area:atual}
+.frow--produto > :nth-child(5){grid-area:seta}
+.frow--produto > :nth-child(6){grid-area:novo}
+.frow--produto + .frow--produto{padding-top:14px;border-top:1px dashed var(--line)}
 .farrow{display:grid;place-items:center;height:44px;font-family:var(--ff-mono);font-size:18px;color:var(--muted)}
 /* numa linha com texto, os campos alinham pelo rótulo: um texto comprido
    cresce pra baixo sem empurrar os preços (a seta desce a altura do
@@ -121,6 +139,13 @@
 textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resize:none;overflow:hidden}
 .ffield--result .fbox{border-color:color-mix(in srgb,var(--accent-ink) 45%,var(--line-strong))}
 
+/* o que a folha calcula (o valor até os 65 anos) ou só mostra (a taxa): a
+   caixa verde, sem campo e sem a marca; enquanto falta alguma coisa pra
+   conta, ela diz o quê */
+.ffield--calc .fbox{border-color:color-mix(in srgb,var(--accent-ink) 30%,var(--line));background:color-mix(in srgb,var(--accent-ink) 9%,var(--surface))}
+.fbox__out{flex:1;min-width:0;padding:0 14px;overflow:hidden;font-family:var(--ff-mono);font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right;text-overflow:ellipsis;white-space:nowrap;color:var(--accent-ink)}
+.ffield--calc.is-empty .fbox__out{font-family:var(--ff-body);font-size:13px;font-weight:400;line-height:1.25;text-align:left;white-space:normal;color:var(--muted)}
+
 /* a marca de preenchido, como os círculos da folha: cinza com o campo
    vazio e verde quando o aluno escreve alguma coisa */
 @keyframes mark-pop{from{transform:scale(0)}60%{transform:scale(1.2)}to{transform:none}}
@@ -131,19 +156,16 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
 
 /* ---------- O valor total ---------- */
 /* Como o pé da folha: a faixa "Valor total economizado" e, embaixo, a
-   caixa grande. O aluno escreve o total que calculou (a folha não soma). */
+   caixa grande, com a soma do que as 3 etapas viram até os 65 anos. */
 .ptotal{margin-top:20px;overflow:hidden;border-color:color-mix(in srgb,var(--accent-ink) 40%,var(--line))}
-.ptotal__bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;background:linear-gradient(90deg,#272259,#3A338A);font-family:var(--ff-display);font-weight:700;font-size:16px;letter-spacing:.06em;line-height:1.3;text-align:center;text-transform:uppercase;color:#fff;cursor:text}
+.ptotal__bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;background:linear-gradient(90deg,#272259,#3A338A);font-family:var(--ff-display);font-weight:700;font-size:16px;letter-spacing:.06em;line-height:1.3;text-align:center;text-transform:uppercase;color:#fff}
 [data-theme="dark"] .ptotal__bar{background:linear-gradient(90deg,#2A2860,#3B3878)}
 .ptotal__bar .ico{flex:none;width:20px;height:20px;color:#3CEFA2}
 .ptotal__body{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 22px 20px;background:color-mix(in srgb,var(--accent-ink) 5%,var(--surface))}
 .ffield--total{width:min(100%,440px)}
 .ffield--total .fbox{height:66px;border-width:2px;border-radius:16px}
-.ffield--total .fbox__pre{padding-left:20px;font-size:18px}
-.ffield.ffield--total .fbox__input{padding:0 10px;font-size:clamp(24px,4vw,32px);text-align:center}
-.ffield--total .fbox__input::placeholder{font-size:inherit}
-.ffield--total .fbox__mark{width:24px;height:24px;margin-right:18px}
-.ffield--total .fbox__mark::before{inset:4px}
+.ffield--total .fbox__out{padding:0 18px;font-size:clamp(24px,4vw,32px);text-align:center}
+.ffield--total.is-empty .fbox__out{font-size:14px;text-align:center}
 .ptotal__sub{max-width:52ch;font-size:13.5px;line-height:1.5;text-align:center;color:var(--ink-soft)}
 
 /* ---------- Responsive ---------- */
@@ -154,17 +176,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .ekey{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
   .phow{grid-template-columns:minmax(0,1fr)}
   .phow__step{padding:12px 14px}
-}
-/* sem largura pros 4 campos do produto numa linha (no tablet, a faixa da
-   etapa ainda ocupa o lado): o nome e a marca em cima, os preços embaixo */
-@media (max-width:1100px){
-  .frow--produto{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"produto . marca" "atual seta novo"}
-  .frow--produto > :nth-child(1){grid-area:produto}
-  .frow--produto > :nth-child(2){grid-area:marca}
-  .frow--produto > :nth-child(3){grid-area:atual}
-  .frow--produto > :nth-child(4){grid-area:seta}
-  .frow--produto > :nth-child(5){grid-area:novo}
-  .frow--produto + .frow--produto{padding-top:14px;border-top:1px dashed var(--line)}
+  .pprazo{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:760px){
   .ekeys{grid-template-columns:minmax(0,1fr)}
@@ -181,6 +193,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
 @media (max-width:720px){
   .pintro{margin-top:20px;padding:20px 16px 18px}
   .pintro h1{margin-top:12px;font-size:clamp(24px,7vw,30px)}
+  .pprazo{padding:16px 14px 18px}
   .etapa__main{padding:16px 14px 18px}
   .frow--resultado{padding:12px}
   .ptotal__bar{font-size:14px;letter-spacing:.04em}
@@ -193,7 +206,9 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .sim__head > div{flex-basis:calc(100% - 60px)}
   .savestate{margin-left:54px}
   .frow--2,.frow--resultado{grid-template-columns:minmax(0,1fr)}
-  .frow--produto{grid-template-areas:"produto produto produto" "marca marca marca" "atual seta novo";column-gap:4px}
+  /* o nome sozinho em cima; a marca e o consumo lado a lado; os preços
+     embaixo */
+  .frow--produto{grid-template-areas:"produto produto produto produto produto produto produto" "marca marca marca marca marca consumo consumo" "atual atual atual seta novo novo novo";column-gap:4px}
   .farrow{width:12px;font-size:16px}
   .fbox__pre{padding-left:9px}
   .fbox__input{padding:0 6px}
@@ -205,8 +220,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .frow--produto .fbox__input{padding:0 4px}
   .frow--produto .fbox__mark{width:16px;height:16px;margin:0 7px 0 3px}
   .ffield--total .fbox{height:60px}
-  .ffield--total .fbox__pre{padding-left:14px;font-size:16px}
-  .ffield--total .fbox__mark{margin-right:14px}
+  .ffield--total .fbox__out{padding:0 12px}
 }
 
 /* ---------- A folha impressa ---------- */
@@ -231,7 +245,8 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .psheet__main{min-width:0;padding:3mm 5mm 4mm}
   .psheet__name{font-family:var(--ff-display);font-weight:600;font-size:16pt;line-height:1.2}
   .psheet__row{display:grid;grid-template-columns:minmax(0,1fr);align-items:end;gap:1.5mm 4mm;margin-top:2.2mm}
-  .psheet__row--produto{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.85fr) auto minmax(0,.85fr)}
+  .psheet__row--produto{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,.75fr) minmax(0,.9fr) auto minmax(0,.9fr)}
+  .psheet__prazo{margin-top:4mm}
   .psheet__row--2,.psheet__row--resultado{grid-template-columns:repeat(2,minmax(0,1fr))}
   .psheet__field{min-width:0}
   .psheet__label{font-size:8.5pt;font-weight:600;line-height:1.25}

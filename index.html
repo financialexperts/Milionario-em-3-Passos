@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Milionário em 3 passos - Financial Experts</title>
-<meta name="description" content="Se torne um milionário em 3 passos: troque uma marca, diminua um hábito e corte um gasto recorrente. Preencha a folha com os seus números e as economias que você calculou.">
+<meta name="description" content="Se torne um milionário em 3 passos: troque uma marca, diminua um hábito e corte um gasto recorrente. Preencha a folha com os seus números e veja quanto a sua economia mensal vira até os 65 anos.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#F7F7FA" id="meta-theme-color">
 <link rel="icon" type="image/png" href="frontend/img/favicon.png">
@@ -59,7 +59,7 @@
     <div class="pintro__text">
       <p class="card__kicker intro__tag"><span data-icon="moedas"></span>Planilha do milionário</p>
       <h1 id="pintro-title">Se torne um milionário em 3 passos</h1>
-      <p class="intro__lead">Trocas pequenas no dia a dia, guardadas mês a mês até a aposentadoria, viram muito dinheiro. Escolha uma marca para trocar, um hábito para diminuir e um gasto recorrente para cortar, e preencha cada etapa com os seus números.</p>
+      <p class="intro__lead">Trocas pequenas no dia a dia, investidas mês a mês até os 65 anos, viram muito dinheiro. Escolha uma marca para trocar, um hábito para diminuir e um gasto recorrente para cortar, e preencha cada etapa com os seus números.</p>
     </div>
 
     <!-- as 3 etapas: cada uma leva até o cartão dela -->
@@ -68,15 +68,20 @@
     </div>
   </section>
 
-  <!-- como preencher, em 2 passos -->
+  <!-- como preencher, em 3 passos (a taxa, nos data-taxa, vem do
+       backend/js/etapas.js) -->
   <ol class="phow" aria-label="Como preencher">
     <li class="phow__step fx">
+      <span class="itile itile--amber" data-icon="relogio"></span>
+      <div><p class="phow__title">Até os 65 anos</p><p class="phow__text">Quanto falta para você fazer 65 anos: é o tempo que o seu dinheiro fica investido.</p></div>
+    </li>
+    <li class="phow__step fx">
       <span class="itile itile--violet" data-icon="lista"></span>
-      <div><p class="phow__title">As 3 etapas</p><p class="phow__text">Os produtos, o hábito e o gasto que você escolheu, com os preços de hoje.</p></div>
+      <div><p class="phow__title">As 3 etapas</p><p class="phow__text">Os produtos (e quanto você usa deles por mês), o hábito e o gasto que você escolheu, com os preços de hoje.</p></div>
     </li>
     <li class="phow__step fx">
       <span class="itile itile--green" data-icon="calculadora"></span>
-      <div><p class="phow__title">As economias</p><p class="phow__text">Faça as contas no sistema de cálculo da Financial Experts e escreva os resultados nos <strong>campos verdes</strong>. Esta folha não calcula nada.</p></div>
+      <div><p class="phow__title">As economias</p><p class="phow__text">Calcule quanto cada etapa economiza por mês e escreva nos <strong>campos verdes</strong>: é o seu aporte mensal. A folha mostra quanto ele vira até os 65 anos, a <span data-taxa>10%</span> ao ano.</p></div>
     </li>
   </ol>
 
@@ -110,10 +115,14 @@
       </div>
     </div>
 
+    <!-- quanto falta pros 65 anos e a taxa de juros (sheet-view.js monta) -->
+    <section class="card pprazo" id="p-prazo" aria-labelledby="pprazo-title"></section>
+
     <!-- as 3 etapas da folha (sheet-view.js monta) -->
     <div class="etapas" id="p-etapas"></div>
 
-    <!-- o valor total economizado: o aluno escreve o total que calculou -->
+    <!-- o valor total economizado: a soma do que as 3 etapas viram até os
+         65 anos (a folha calcula) -->
     <section class="card ptotal" id="p-total" aria-label="Valor total economizado"></section>
 
     <div class="actions actions--end">
@@ -145,6 +154,7 @@
 <script src="frontend/js/icons.js"></script>
 <script src="frontend/js/parse.js"></script>
 <script src="frontend/js/mask.js"></script>
+<script src="frontend/js/juros.js"></script>
 <script src="frontend/js/sheet.js"></script>
 <script src="frontend/js/sync.js"></script>
 <script src="frontend/js/sheet-view.js"></script>
