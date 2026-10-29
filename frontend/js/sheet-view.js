@@ -73,7 +73,7 @@
   function rowHTML(row) {
     return '<div class="frow frow--' + row.kind + (row.kind === "linha" ? " frow--" + row.fields.length : "") + '">' +
       (row.kind === "resultado"
-        ? '<p class="frow__kicker">' + Icons.svg("calculadora") + "A economia mensal vira um aporte, investido a " + taxa() + " ao ano até os 65 anos</p>"
+        ? '<p class="frow__kicker">' + Icons.svg("calculadora") + "A economia mensal vira um aporte, investido a " + taxa() + " ao ano</p>"
         : "") +
       row.fields.map(function (f) {
         return (f.arrow ? '<span class="farrow" aria-hidden="true">→</span>' : "") + fieldHTML(f);

@@ -97,7 +97,7 @@
    embaixo, com a seta entre eles. As colunas acertam as larguras: a marca
    fica da largura do nome, o consumo (só um número) menor, e os dois preços
    iguais. */
-.frow--produto{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.5fr) auto minmax(0,.5fr) minmax(0,.5fr) minmax(0,1.5fr);grid-template-areas:"produto produto marca marca marca marca consumo" "atual atual atual seta novo novo novo"}
+.frow--produto{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.5fr) auto minmax(0,.5fr) minmax(0,.7fr) minmax(0,1.3fr);grid-template-areas:"produto produto marca marca marca marca consumo" "atual atual atual seta novo novo novo"}
 .frow--produto > :nth-child(1){grid-area:produto}
 .frow--produto > :nth-child(2){grid-area:marca}
 .frow--produto > :nth-child(3){grid-area:consumo}
@@ -237,7 +237,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .psheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .psheet__title{font-family:var(--ff-display);font-weight:700;font-size:23pt;line-height:1.08;letter-spacing:.02em;text-align:center;text-transform:uppercase;color:#151238}
   .psheet__who{margin-top:2mm;font-size:10pt;text-align:center;color:#57537E}
-  .psheet__etapa{display:grid;grid-template-columns:34mm minmax(0,1fr);margin-top:5mm;border:1.2px solid #9E9CB4;border-radius:4mm;break-inside:avoid}
+  .psheet__etapa{display:grid;grid-template-columns:28mm minmax(0,1fr);margin-top:4mm;border:1.2px solid #9E9CB4;border-radius:4mm;break-inside:avoid}
   .psheet__side{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3mm 2mm;border-right:1px solid #BEBDCD;text-align:center}
   .psheet__kicker{font-family:var(--ff-display);font-weight:700;font-size:12pt;text-transform:uppercase}
   .psheet__num{font-family:var(--ff-display);font-weight:700;font-size:40pt;line-height:1;color:#B9B8C8}
@@ -245,8 +245,15 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .psheet__main{min-width:0;padding:3mm 5mm 4mm}
   .psheet__name{font-family:var(--ff-display);font-weight:600;font-size:16pt;line-height:1.2}
   .psheet__row{display:grid;grid-template-columns:minmax(0,1fr);align-items:end;gap:1.5mm 4mm;margin-top:2.2mm}
-  .psheet__row--produto{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,.75fr) minmax(0,.9fr) auto minmax(0,.9fr)}
-  .psheet__prazo{margin-top:4mm}
+  /* os 5 campos do produto numa linha, cada rótulo numa linha só (o do
+     consumo é o mais comprido) */
+  .psheet__row--produto{grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,1.2fr) minmax(0,1fr) auto minmax(0,1fr);column-gap:2.5mm}
+  /* o prazo e a taxa, embaixo do nome: o rótulo do lado da caixa, pra a
+     folha caber numa página */
+  .psheet__prazo{margin-top:3.5mm}
+  .psheet__prazo .psheet__field{display:flex;align-items:center;gap:2mm}
+  .psheet__prazo .psheet__label{flex:none}
+  .psheet__prazo .psheet__fill{flex:1;margin-top:0}
   .psheet__row--2,.psheet__row--resultado{grid-template-columns:repeat(2,minmax(0,1fr))}
   .psheet__field{min-width:0}
   .psheet__label{font-size:8.5pt;font-weight:600;line-height:1.25}
