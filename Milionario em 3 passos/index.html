@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milionário em 3 passos - Financial Experts</title>
+<meta name="description" content="Se torne um milionário em 3 passos: troque uma marca, diminua um hábito e corte um gasto recorrente. Preencha a folha com os seus números e as economias que você calculou.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F7F7FA" id="meta-theme-color">
+<link rel="icon" type="image/png" href="frontend/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frontend/css/styles.css">
+<link rel="stylesheet" href="frontend/css/passos.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__in">
+    <a class="brand" href="index.html" aria-label="Recarregar a página">
+      <img class="brand__logo brand__logo--light" src="frontend/img/finexperts-preto.png" alt="Financial Experts">
+      <img class="brand__logo brand__logo--dark" src="frontend/img/financial-experts-branco.png" alt="Financial Experts">
+    </a>
+    <span class="brand__sep" aria-hidden="true"></span>
+    <p class="topbar__title"><span data-icon="moedas"></span><span class="topbar__text">Milionário em 3 passos</span></p>
+
+    <!-- quem entrou e o botão de sair (session.js) -->
+    <div class="userbox" id="userbox" hidden>
+      <span class="userbox__name" id="userbox-name"></span>
+      <button class="btn btn--ghost glass btn--sm" id="btn-logout" type="button">Sair</button>
+    </div>
+
+    <button class="iconbtn glass" id="tema" type="button" aria-label="Alternar tema claro e escuro" title="Alternar tema claro e escuro">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ O LOGIN ============ -->
+  <!-- até alguém entrar, o session.js mostra uma destas telas no lugar da
+       folha; a de entrar / criar conta é montada pelo auth.js -->
+  <section id="view-loading" class="loading">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Carregando…</p>
+  </section>
+  <section id="view-setup" class="panel" hidden></section>
+  <section id="view-auth" class="panel auth" hidden></section>
+
+  <div id="view-app" hidden>
+
+  <!-- ============ A ABERTURA ============ -->
+  <!-- as etapas vêm de backend/js/etapas.js (o sheet-view.js monta a
+       legenda) -->
+  <section class="card pintro" aria-labelledby="pintro-title">
+    <div class="pintro__text">
+      <p class="card__kicker intro__tag"><span data-icon="moedas"></span>Planilha do milionário</p>
+      <h1 id="pintro-title">Se torne um milionário em 3 passos</h1>
+      <p class="intro__lead">Trocas pequenas no dia a dia, guardadas mês a mês até a aposentadoria, viram muito dinheiro. Escolha uma marca para trocar, um hábito para diminuir e um gasto recorrente para cortar, e preencha cada etapa com os seus números.</p>
+    </div>
+
+    <!-- as 3 etapas: cada uma leva até o cartão dela -->
+    <div class="pintro__side">
+      <ul class="ekeys" id="p-keys" aria-label="As 3 etapas"></ul>
+    </div>
+  </section>
+
+  <!-- como preencher, em 2 passos -->
+  <ol class="phow" aria-label="Como preencher">
+    <li class="phow__step fx">
+      <span class="itile itile--violet" data-icon="lista"></span>
+      <div><p class="phow__title">As 3 etapas</p><p class="phow__text">Os produtos, o hábito e o gasto que você escolheu, com os preços de hoje.</p></div>
+    </li>
+    <li class="phow__step fx">
+      <span class="itile itile--green" data-icon="calculadora"></span>
+      <div><p class="phow__title">As economias</p><p class="phow__text">Faça as contas no sistema de cálculo da Financial Experts e escreva os resultados nos <strong>campos verdes</strong>. Esta folha não calcula nada.</p></div>
+    </li>
+  </ol>
+
+  <!-- os medidores grudam no alto só dentro desta seção -->
+  <section class="sim" aria-labelledby="pf-title">
+    <div class="sim__head head fx">
+      <span class="itile itile--amber itile--lg" data-icon="cofrinho"></span>
+      <div>
+        <h2 class="invcard__title" id="pf-title">A sua folha</h2>
+        <p class="invcard__sub">Tudo o que você escreve fica guardado na sua conta. Quando terminar, dá para imprimir a folha preenchida.</p>
+      </div>
+      <!-- onde a folha está guardada (sheet-view.js / sync.js) -->
+      <p class="savestate" id="p-save"></p>
+    </div>
+
+    <!-- quantas etapas estão completas e quantos campos já foram preenchidos -->
+    <div class="meters" id="meters">
+      <div class="meter meter--steps fx">
+        <div class="meter__top">
+          <p class="meter__label"><span class="meter__ico" data-icon="conferir"></span>Etapas<span class="meter__more">&nbsp;completas</span></p>
+          <p class="meter__nums"><span class="meter__used" id="meter-etapas-used">0</span> / <span id="meter-etapas-max"></span></p>
+        </div>
+        <span class="meter__track" aria-hidden="true"><span class="meter__fill" id="meter-etapas-fill"></span></span>
+      </div>
+      <div class="meter fx">
+        <div class="meter__top">
+          <p class="meter__label"><span class="meter__ico" data-icon="lista"></span>Campos<span class="meter__more">&nbsp;preenchidos</span></p>
+          <p class="meter__nums"><span class="meter__used" id="meter-campos-used">0</span> / <span id="meter-campos-max"></span></p>
+        </div>
+        <span class="meter__track" aria-hidden="true"><span class="meter__fill" id="meter-campos-fill"></span></span>
+      </div>
+    </div>
+
+    <!-- as 3 etapas da folha (sheet-view.js monta) -->
+    <div class="etapas" id="p-etapas"></div>
+
+    <!-- o valor total economizado: o aluno escreve o total que calculou -->
+    <section class="card ptotal" id="p-total" aria-label="Valor total economizado"></section>
+
+    <div class="actions actions--end">
+      <button class="btn btn--ghost glass fx" type="button" id="btn-clear"><span data-icon="lixeira"></span>Apagar a folha</button>
+      <button class="btn btn--primary glass fx" type="button" id="btn-print"><span data-icon="imprimir"></span>Imprimir a folha</button>
+    </div>
+  </section>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A sua folha fica guardada na sua conta.</p>
+    <p>Copyright © 2026 Financial Experts.</p>
+  </div>
+</footer>
+
+<!-- a folha "Se torne um milionário em 3 passos" preenchida: só aparece na
+     impressão (sheet-view.js monta, passos.css mostra) -->
+<div class="psheet" id="psheet"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="frontend/js/config.js"></script>
+<script src="frontend/js/supabaseClient.js"></script>
+<!-- os dados vêm antes: os módulos do frontend leem deles assim que carregam -->
+<script src="backend/js/etapas.js"></script>
+<script src="frontend/js/format.js"></script>
+<script src="frontend/js/icons.js"></script>
+<script src="frontend/js/parse.js"></script>
+<script src="frontend/js/mask.js"></script>
+<script src="frontend/js/sheet.js"></script>
+<script src="frontend/js/sync.js"></script>
+<script src="frontend/js/sheet-view.js"></script>
+<script src="frontend/js/auth.js"></script>
+<script src="frontend/js/ui.js"></script>
+<script src="frontend/js/session.js"></script>
+<script src="frontend/js/sheet-app.js"></script>
+</body>
+</html>
