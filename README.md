@@ -2,7 +2,7 @@
 
 A folha **"Se torne um milionário em 3 passos"** para o aluno preencher, na tela, com os números dele: trocar uma marca, diminuir um hábito e diminuir um gasto recorrente. É só preencher: **a folha não faz conta nenhuma**. As economias (por mês e até a aposentadoria) e o valor total, o aluno calcula no sistema de cálculo da Financial Experts e escreve aqui.
 
-- **A folha** (`index.html`): as 3 etapas da folha original, cada uma num cartão, e o valor total economizado no fim. Dá para imprimir a folha preenchida, do jeito da original. Veja [A folha](#a-folha).
+- **A folha** (`index.html`): as 3 etapas da folha original, cada uma num cartão, e o valor total economizado no fim. Veja [A folha](#a-folha).
 - **O login** é o mesmo da Teoria das caixas, do Fluxo de Caixa e das Escolhas da Vanessa e da Karine, com o mesmo banco (Supabase): quem já tem conta lá entra aqui com o mesmo e-mail e a mesma senha. O que o aluno escreve fica guardado na conta dele. Veja [O login e o banco](#o-login-e-o-banco).
 
 Não tem build nem instalação: é uma página `.html` + alguns arquivos `.js` e `.css` estáticos, na identidade visual da Financial Experts (a mesma da Teoria das caixas). Para rodar, basta publicar a pasta no GitHub Pages (ou abrir o `index.html` no navegador, com internet, por causa do login).
@@ -31,7 +31,7 @@ Não tem build nem instalação: é uma página `.html` + alguns arquivos `.js` 
 
 Enquanto o aluno preenche, dois medidores ficam grudados no alto: quantas etapas estão completas e quantos campos já foram preenchidos (são 25). Ao lado do título "A sua folha", um aviso mostra onde ela está guardada: **Salvo na sua conta**, **Salvando…** ou **Salvo só neste navegador** (com o motivo ao parar o mouse em cima).
 
-**Imprimir a folha** imprime só a folha "Se torne um milionário em 3 passos", do jeito da original, numa página A4: o título, o nome do aluno e o mês, uma caixa por etapa ("Etapa 1:", o número, o desenho e os campos preenchidos) e o valor total no pé. Em branco, ela sai como a original, para preencher à mão. As cores são as do tema claro mesmo com o tema escuro ligado. Imprimir pelo menu do navegador também sai a folha.
+A página não tem botão de imprimir. Quem imprimir pelo menu do navegador (Ctrl+P) recebe só a folha "Se torne um milionário em 3 passos", do jeito da original, numa página A4: o título, o nome do aluno e o mês, uma caixa por etapa e o valor total no pé (com as cores do tema claro, mesmo com o tema escuro ligado).
 
 **Apagar a folha** apaga tudo (na conta e no navegador) e começa de novo (pergunta antes).
 
@@ -96,7 +96,7 @@ frontend/
                                 preenchido e o guardar no navegador
   js/sync.js                    o guardar no banco (tabela worksheets)
   js/sheet-view.js              as etapas, os campos, os medidores e a folha impressa
-  js/sheet-app.js               liga tudo: abrir, imprimir e apagar
+  js/sheet-app.js               liga tudo: abrir e apagar
 backend/
   js/etapas.js                  as 3 etapas: títulos, campos, rótulos e exemplos
 ```

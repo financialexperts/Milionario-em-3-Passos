@@ -35,8 +35,7 @@
     relogio: '<circle cx="12" cy="12" r="9"/><path class="ico-hands" d="M12 7v5l3 2"/>',
     conferir: '<circle cx="12" cy="12" r="9"/><path class="ico-line" pathLength="1" d="M7.8 12.4l2.9 2.9 5.5-6"/>',
     alerta: '<path d="M12 3.5 21.5 20h-19z"/><path class="ico-mark" d="M12 9.8v4.6M12 17.1h.01"/>',
-    lixeira: '<path d="M4 6.5h16"/><path class="ico-lid" d="M9.5 6.5V4h5v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10 10.5v6M14 10.5v6"/>',
-    imprimir: '<path d="M7 8V3.5h10V8"/><rect x="3.5" y="8" width="17" height="8.5" rx="2"/><path class="ico-paper" d="M7 13.5h10v7H7z"/>'
+    lixeira: '<path d="M4 6.5h16"/><path class="ico-lid" d="M9.5 6.5V4h5v2.5"/><path d="M6 6.5l1 14h10l1-14"/><path d="M10 10.5v6M14 10.5v6"/>'
   };
 
   function svg(name) {

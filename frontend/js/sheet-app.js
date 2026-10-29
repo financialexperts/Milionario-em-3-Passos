@@ -42,15 +42,10 @@ window.Session.ready(function (user) {
   window.addEventListener("resize", aoRolar);
   syncStuck();
 
-  /* ============ imprimir e apagar ============ */
-  // A folha impressa é montada na hora (o beforeprint também monta, pra quem
-  // imprime pelo menu do navegador). Em branco, ela sai como a folha
-  // original, pra preencher à mão.
-  el("btn-print").addEventListener("click", function () {
-    View.buildSheet();
-    window.print();
-  });
-
+  /* ============ apagar ============ */
+  // (Imprimir pelo menu do navegador sai a folha do jeito da original: o
+  // sheet-view.js monta ela no beforeprint.)
+  //
   // Apagar a folha tira tudo o que o aluno escreveu (aqui e no banco): se já
   // tem alguma coisa, pergunta antes.
   el("btn-clear").addEventListener("click", function () {

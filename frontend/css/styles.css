@@ -295,7 +295,6 @@ button{font:inherit;color:inherit}
 .fx.is-poked .ico--calendario .ico-pips{animation:ico-pulse .45s ease 2}
 .fx.is-poked .ico--lista .ico-pips{animation:ico-pulse .45s ease 2}
 .fx.is-poked .ico--moedas{animation:ico-hop .6s ease}
-.fx.is-poked .ico--imprimir .ico-paper{animation:ico-hop .6s ease}
 .fx.is-poked .ico--alerta .ico-mark{animation:ico-pulse .45s ease 2}
 /* as 3 etapas: os copos trocam de lugar, o pão de cima pula e a sacola
    chacoalha */
