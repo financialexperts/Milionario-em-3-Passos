@@ -167,6 +167,11 @@ button{font:inherit;color:inherit}
 [data-theme="light"] .brand__logo--dark{display:none}
 [data-theme="dark"] .brand__logo--light{display:none}
 .brand__sep{width:1px;height:22px;background:var(--line-strong);flex:none}
+/* o nome da folha, ao lado do logo (no lugar das abas da Teoria das caixas:
+   aqui a atividade é uma só) */
+.topbar__title{display:flex;align-items:center;gap:8px;min-width:0;margin-right:auto;font-family:var(--ff-display);font-weight:600;font-size:15px;letter-spacing:-.01em;line-height:1.2;color:var(--ink);white-space:nowrap}
+.topbar__title .ico{flex:none;width:17px;height:17px;color:var(--accent-ink)}
+.topbar__text{overflow:hidden;text-overflow:ellipsis}
 
 /* quem entrou e o botão de sair */
 .userbox{display:flex;align-items:center;gap:10px;flex:none;min-width:0;margin-right:2px}
@@ -264,30 +269,20 @@ button{font:inherit;color:inherit}
 .ico{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
 .ico *{transform-box:fill-box;transform-origin:center}
 .ico .ico-hands{transform-box:view-box;transform-origin:12px 12px}
-.ico .ico-hand{transform-box:view-box;transform-origin:12px 13.5px}
-.ico .ico-beam{transform-box:view-box;transform-origin:12px 6.5px}
-.ico .ico-flame,.ico--barras rect{transform-origin:50% 100%}
 .ico .ico-line{stroke-dasharray:1}
 .ico .ico-keys{stroke-width:2.4}
 .ico .ico-pips{stroke-width:2.6}
+.ico .ico-thin{stroke-width:1.4}
 
-@keyframes ico-wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-14deg)}45%{transform:rotate(10deg)}70%{transform:rotate(-5deg)}}
 @keyframes ico-hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-4px)}60%{transform:translateY(0)}80%{transform:translateY(-1.5px)}}
 @keyframes ico-spin{to{transform:rotate(360deg)}}
-@keyframes ico-spin-back{to{transform:rotate(-360deg)}}
 @keyframes ico-draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes ico-launch{0%{transform:none;opacity:1}40%{transform:translateY(-14px);opacity:0}41%{transform:translateY(12px);opacity:0}100%{transform:none;opacity:1}}
-@keyframes ico-flicker{0%,100%{transform:scale(1)}25%{transform:scale(1.25,1.5)}50%{transform:scale(.85,.9)}75%{transform:scale(1.15,1.3)}}
-@keyframes ico-thunk{0%{transform:translate(6px,-6px);opacity:0}55%{transform:translate(-1px,1px);opacity:1}75%{transform:translate(.5px,-.5px)}100%{transform:none}}
-@keyframes ico-grow{from{transform:scaleY(.15)}to{transform:none}}
-@keyframes ico-slide-l{50%{transform:translateX(-6px)}}
-@keyframes ico-slide-r{50%{transform:translateX(6px)}}
 @keyframes ico-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.3}}
 @keyframes ico-shake{0%,100%{transform:none}20%{transform:translateX(-2px) rotate(-10deg)}40%{transform:translateX(2px) rotate(10deg)}60%{transform:translateX(-1px) rotate(-5deg)}80%{transform:translateX(1px)}}
-@keyframes ico-tilt{0%,100%{transform:none}25%{transform:rotate(-12deg)}55%{transform:rotate(9deg)}80%{transform:rotate(-4deg)}}
 @keyframes ico-drop{0%{transform:none;opacity:1}55%{transform:translateY(4px);opacity:0}56%{transform:translateY(-4px);opacity:0}100%{transform:none;opacity:1}}
 @keyframes ico-lift{0%,100%{transform:none}40%{transform:translateY(-3.5px) rotate(-6deg)}}
-@keyframes ico-fly{0%{transform:none;opacity:1}45%{transform:translate(8px,-8px);opacity:0}46%{transform:translate(-8px,8px);opacity:0}100%{transform:none;opacity:1}}
+@keyframes ico-swap-a{50%{transform:translate(1.5px,1.5px) scale(.9)}}
+@keyframes ico-swap-b{50%{transform:translate(-1.5px,-1.5px) scale(.9)}}
 @keyframes tile-bump{0%,100%{transform:none}40%{transform:scale(1.1)}}
 
 .fx.is-poked .itile{animation:tile-bump .45s var(--spring)}
@@ -304,12 +299,9 @@ button{font:inherit;color:inherit}
 .fx.is-poked .ico--alerta .ico-mark{animation:ico-pulse .45s ease 2}
 /* as 3 etapas: os copos trocam de lugar, o pão de cima pula e a sacola
    chacoalha */
-.ico .ico-thin{stroke-width:1.4}
 .fx.is-poked .ico--troca .ico-cup{animation:ico-swap-a .8s var(--spring)}
 .fx.is-poked .ico--troca .ico-cup--2{animation-name:ico-swap-b}
 .fx.is-poked .ico--troca .ico-arrows{animation:ico-pulse .5s ease}
-@keyframes ico-swap-a{50%{transform:translate(1.5px,1.5px) scale(.9)}}
-@keyframes ico-swap-b{50%{transform:translate(-1.5px,-1.5px) scale(.9)}}
 .fx.is-poked .ico--hamburguer .ico-bun{animation:ico-hop .6s ease}
 .fx.is-poked .ico--assinatura .ico-bag{animation:ico-shake .5s ease}
 .fx.is-poked .ico--assinatura .ico-pips{animation:ico-pulse .45s ease 2}
@@ -342,13 +334,12 @@ button{font:inherit;color:inherit}
    vidro por onde as etapas passam por baixo. O padding e a borda existem
    desde o começo (transparentes) pra nada pular de lugar na hora de grudar. */
 .meters{position:sticky;top:calc(var(--header-h) + 8px);z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:20px -6px 14px;padding:6px;border:1px solid transparent;border-radius:calc(var(--radius) + 6px);transition:background .2s,border-color .2s,box-shadow .2s,opacity .2s}
-.meters--3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .meters.is-stuck{background:color-mix(in srgb,var(--surface) 70%,transparent);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-color:var(--line);box-shadow:var(--shadow)}
 /* No celular, com o teclado aberto sobra pouca tela: enquanto o aluno
    escreve numa célula, os medidores grudados saem da frente. Em tela baixa
    (celular deitado), eles nem grudam. */
 @media (max-width:720px){
-  .sim:has(.cell__input:focus:not([readonly])) .meters.is-stuck{opacity:0;pointer-events:none}
+  .sim:has(.fbox__input:focus) .meters.is-stuck{opacity:0;pointer-events:none}
 }
 @media (max-height:500px){
   .meters{position:static}
@@ -359,17 +350,67 @@ button{font:inherit;color:inherit}
 .meter__label{display:flex;align-items:center;gap:7px;font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .meter__ico{flex:none;color:var(--m)}
 .meter__ico .ico{width:16px;height:16px}
-.meter--saldo .meter__ico{color:var(--ink-soft)}
 .meter__nums{font-family:var(--ff-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 .meter__used{font-size:15px;font-weight:600;color:var(--ink)}
 .meter__track{display:flex;height:8px;margin-top:10px;border-radius:999px;background:color-mix(in srgb,var(--m) 16%,transparent);overflow:hidden}
 .meter__fill{display:block;flex:none;height:100%;width:0;background:var(--m);transition:width .6s cubic-bezier(.16,1,.3,1)}
-/* o saldo: um pedaço por caixa, na cor dela */
-.meter__track--stack{background:color-mix(in srgb,var(--ink) 9%,transparent)}
-.meter__seg{display:block;flex:none;height:100%;width:0;background:var(--cb);transition:width .6s cubic-bezier(.16,1,.3,1)}
-.meter__seg + .meter__seg{box-shadow:inset 2px 0 0 var(--surface)}
 
+/* o selo verde de concluído */
 @keyframes badge-pop{from{transform:scale(0)}to{transform:none}}
 
 /* ---------- Footer ---------- */
 footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font-size:13px;color:var(--muted);text-align:center}
+
+/* ---------- Responsive ---------- */
+@media (max-width:900px){
+  /* o login: o texto em cima, centralizado, e o cartão embaixo */
+  .auth{grid-template-columns:1fr;gap:26px;padding-top:20px;min-height:0}
+  .auth__intro{text-align:center}
+  .auth__intro p:not(.card__kicker){margin-left:auto;margin-right:auto}
+  .auth__intro h1{margin-left:auto;margin-right:auto}
+}
+
+@media (max-width:1040px){
+  /* na barra do topo só cabe o botão de sair */
+  .userbox__name{display:none}
+}
+
+@media (max-width:720px){
+  .wrap{padding:0 16px}
+  .auth{padding:28px 0 32px}
+  .auth__intro h1{max-width:none}
+  .card__body{padding:18px 18px 20px}
+  .actions{flex-direction:column-reverse}
+  .btn{padding:13px 14px}
+
+  .sim__head{margin-top:36px}
+  .head{gap:12px}
+  .head .itile--lg{width:42px;height:42px;border-radius:12px}
+  /* grudados no alto do celular, os medidores ficam mais baixos */
+  .meters{gap:5px;padding:5px;margin:18px -5px 12px}
+  .meter{padding:10px 12px}
+  .meter__track{margin-top:8px}
+}
+
+@media (max-width:560px){
+  /* na barra do topo, o logo, o sair e o tema (o nome da folha já é o
+     título da página) */
+  .brand{margin-right:auto}
+  .brand__sep,.topbar__title{display:none}
+  /* metade da tela pra cada medidor: o rótulo fica com uma palavra só */
+  .meter{padding:9px 10px}
+  .meter__label{gap:4px;font-size:10px;letter-spacing:.06em}
+  .meter__ico .ico{width:14px;height:14px}
+  .meter__more{display:none}
+  .meter__nums{font-size:12px}
+  .meter__used{font-size:13.5px}
+}
+@media (max-width:380px){
+  .card__body{padding:16px}
+  .meter__label{font-size:9.5px;letter-spacing:.04em}
+  .meter__nums{font-size:11.5px}
+  .meter__used{font-size:12.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
