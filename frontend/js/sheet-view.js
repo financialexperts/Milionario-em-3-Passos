@@ -27,14 +27,15 @@
   /* ============ montagem ============ */
   // Um campo da folha: o rótulo em cima e a caixa embaixo, com o "R$" antes
   // (dinheiro), a unidade depois ("vezes") e a marca de preenchido no fim.
+  // Os campos de texto são textarea, pra crescer pra baixo quando a resposta
+  // não cabe numa linha (crescer()); os de número são uma linha só.
   function fieldHTML(f, bare) {
     var id = "f-" + f.id;
-    var input = '<input class="fbox__input" id="' + id + '" data-f="' + f.id + '" type="text" maxlength="' + f.max + '" ' +
-      'autocomplete="off" ' +
-      (f.type === "text"
-        ? 'placeholder="' + Format.esc(f.placeholder || "") + '"'
-        : 'inputmode="' + (f.type === "money" ? "decimal" : "numeric") + '" autocorrect="off" spellcheck="false" placeholder="' + (f.type === "money" ? "0,00" : "0") + '"') +
-      ' value="' + Format.esc(Sheet.get(f.id)) + '">';
+    var common = 'class="fbox__input" id="' + id + '" data-f="' + f.id + '" maxlength="' + f.max + '" autocomplete="off" ';
+    var input = f.type === "text"
+      ? "<textarea " + common + 'rows="1" placeholder="' + Format.esc(f.placeholder || "") + '">' + Format.esc(Sheet.get(f.id)) + "</textarea>"
+      : "<input " + common + 'type="text" inputmode="' + (f.type === "money" ? "decimal" : "numeric") + '" autocorrect="off" spellcheck="false" ' +
+        'placeholder="' + (f.type === "money" ? "0,00" : "0") + '" value="' + Format.esc(Sheet.get(f.id)) + '">';
     return '<div class="ffield ffield--' + f.type + (f.result ? " ffield--result" : "") + '" data-field="' + f.id + '">' +
       (bare ? "" : '<label class="ffield__label" for="' + id + '">' +
         (f.icon ? Icons.svg(f.icon) : "") +
@@ -244,6 +245,23 @@
     input.value = Format.plain(n);
   }
 
+  // Os campos de texto crescem pra baixo quando a resposta não cabe numa
+  // linha (no celular, quase sempre) e voltam a uma linha quando cabe.
+  function crescer(t) {
+    t.style.height = "auto";
+    t.style.height = t.scrollHeight + "px";
+  }
+
+  function crescerTodos() {
+    Array.prototype.forEach.call(root.querySelectorAll("textarea[data-f]"), crescer);
+  }
+
+  // a resposta é uma linha só, como na folha: o Enter não quebra a linha
+  // (e uma quebra colada vira espaço)
+  function semQuebra(e) {
+    if (e.key === "Enter" && e.target.tagName === "TEXTAREA") e.preventDefault();
+  }
+
   function handleInput(e) {
     var t = e.target;
     var id = t.getAttribute && t.getAttribute("data-f");
@@ -251,6 +269,10 @@
     if (!f) return;
     if (f.type === "money" && !e.isComposing) mascarar(t, e.inputType || "");
     if (f.type === "count") contar(t);
+    if (f.type === "text") {
+      if (/[\r\n]/.test(t.value)) t.value = t.value.replace(/\s*[\r\n]+\s*/g, " ");
+      crescer(t);
+    }
     Sheet.set(id, t.value);
     syncField(id);
     if (f.etapa) syncEtapa(Etapas.byKey(f.etapa));
@@ -284,6 +306,7 @@
     totalBox.innerHTML = totalHTML();
     Icons.mount(root);
     Icons.mount(totalBox);
+    crescerTodos();
     sync();
   }
 
@@ -300,6 +323,16 @@
       box.addEventListener("input", handleInput);
       box.addEventListener("focusout", handleBlur);
     });
+    root.addEventListener("keydown", semQuebra);
+    // a largura dos campos muda ao virar o celular, mudar o tamanho da
+    // janela ou quando a fonte termina de carregar: as alturas acompanham
+    var quadroPedido = false;
+    global.addEventListener("resize", function () {
+      if (quadroPedido) return;
+      quadroPedido = true;
+      requestAnimationFrame(function () { quadroPedido = false; crescerTodos(); });
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(crescerTodos);
     global.addEventListener("beforeprint", buildSheet);
   }
 

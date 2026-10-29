@@ -176,7 +176,8 @@ button{font:inherit;color:inherit}
 /* quem entrou e o botão de sair */
 .userbox{display:flex;align-items:center;gap:10px;flex:none;min-width:0;margin-right:2px}
 .userbox__name{max-width:200px;font-size:13px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btn.btn--sm{flex:none;padding:8px 12px;font-size:13px;border-radius:9px}
+/* da altura do botão do tema (36px), pra o dedo acertar */
+.btn.btn--sm{flex:none;min-height:36px;padding:8px 12px;font-size:13px;border-radius:9px}
 
 /* ---------- Login (o mesmo do Fluxo de Caixa) ---------- */
 /* Carregando, o aviso de quando o login não funciona e a tela de entrar /

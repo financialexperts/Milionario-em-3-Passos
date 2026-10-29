@@ -79,8 +79,14 @@
 .frow{display:grid;align-items:end;gap:12px}
 .frow--1{grid-template-columns:minmax(0,1fr)}
 .frow--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* um valor e um texto lado a lado ("Valor mensal atual" e "Possível
+   alternativa"): o texto fica com mais espaço (no celular, um embaixo do
+   outro) */
+@media (min-width:561px){
+  .frow--2:has(> .ffield--money:first-child + .ffield--text){grid-template-columns:minmax(0,1fr) minmax(0,1.6fr)}
+}
 /* um produto: o nome, a marca nova e os dois preços, com a seta entre eles */
-.frow--produto{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.85fr) auto minmax(0,.85fr)}
+.frow--produto{grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,.85fr) auto minmax(0,.85fr)}
 .farrow{display:grid;place-items:center;height:44px;font-family:var(--ff-mono);font-size:18px;color:var(--muted)}
 /* os resultados da etapa: verdes, como a célula do resultado na planilha */
 .frow--resultado{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:2px;padding:12px 14px 14px;border:1px solid color-mix(in srgb,var(--accent-ink) 30%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--accent-ink) 6%,var(--surface))}
@@ -103,6 +109,11 @@
 .ffield:is(.ffield--money,.ffield--count) .fbox__input{font-family:var(--ff-mono);font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
 .ffield:is(.ffield--money,.ffield--count) .fbox__input::placeholder{font-family:var(--ff-body);font-weight:400}
 .ffield--count .fbox__input{padding-right:6px}
+/* os campos de texto crescem pra baixo quando a resposta não cabe numa
+   linha (o sheet-view.js acerta a altura); com uma linha, ficam da altura
+   dos outros */
+.ffield--text .fbox{height:auto;min-height:44px}
+textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resize:none;overflow:hidden}
 .ffield--result .fbox{border-color:color-mix(in srgb,var(--accent-ink) 45%,var(--line-strong))}
 
 /* a marca de preenchido, como os círculos da folha: cinza com o campo
@@ -139,9 +150,9 @@
   .phow{grid-template-columns:minmax(0,1fr)}
   .phow__step{padding:12px 14px}
 }
-/* sem largura pros 4 campos do produto numa linha: o nome e a marca em
-   cima, os preços embaixo */
-@media (max-width:860px){
+/* sem largura pros 4 campos do produto numa linha (no tablet, a faixa da
+   etapa ainda ocupa o lado): o nome e a marca em cima, os preços embaixo */
+@media (max-width:1100px){
   .frow--produto{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);grid-template-areas:"produto produto marca" "atual seta novo"}
   .frow--produto > :nth-child(1){grid-area:produto}
   .frow--produto > :nth-child(2){grid-area:marca}
