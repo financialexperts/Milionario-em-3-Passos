@@ -188,12 +188,17 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .sim__head > div{flex-basis:calc(100% - 60px)}
   .savestate{margin-left:54px}
   .frow--2,.frow--resultado{grid-template-columns:minmax(0,1fr)}
-  .frow--produto{grid-template-areas:"produto produto produto" "marca marca marca" "atual seta novo";column-gap:6px}
-  .farrow{width:14px;font-size:16px}
-  /* os dois preços lado a lado: menos espaço em volta, pra o número caber */
+  .frow--produto{grid-template-areas:"produto produto produto" "marca marca marca" "atual seta novo";column-gap:4px}
+  .farrow{width:12px;font-size:16px}
   .fbox__pre{padding-left:9px}
   .fbox__input{padding:0 6px}
   .fbox__mark{margin:0 9px 0 4px}
+  /* os dois preços lado a lado: menos espaço em volta, pra caber até
+     "1.299,90" a partir de 360px (a letra fica com 16px: menos que isso, o
+     iPhone dá zoom) */
+  .frow--produto .fbox__pre{padding-left:7px;font-size:11.5px}
+  .frow--produto .fbox__input{padding:0 4px}
+  .frow--produto .fbox__mark{width:16px;height:16px;margin:0 7px 0 3px}
   .ffield--total .fbox{height:60px}
   .ffield--total .fbox__pre{padding-left:14px;font-size:16px}
   .ffield--total .fbox__mark{margin-right:14px}

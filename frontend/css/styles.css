@@ -395,7 +395,7 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
 @media (max-width:560px){
   /* na barra do topo, o logo, o sair e o tema (o nome da folha já é o
      título da página) */
-  .brand{margin-right:auto}
+  .brand{margin-right:auto;padding:5px 0}
   .brand__sep,.topbar__title{display:none}
   /* metade da tela pra cada medidor: o rótulo fica com uma palavra só */
   .meter{padding:9px 10px}
