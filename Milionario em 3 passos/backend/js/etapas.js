@@ -13,8 +13,10 @@
   //
   // Cada campo: id (a chave no que fica guardado: não mude depois que os
   // alunos começarem, senão o que eles escreveram se perde), label, hint (o
-  // pedaço do rótulo em letra normal, como "(por semana)"), type ("text",
-  // "money" ou "count"), placeholder, max (quantas letras cabem) e:
+  // pedaço do rótulo em letra normal, como "(por semana)"), sr (o resto do
+  // rótulo pra quem usa leitor de tela, quando o rótulo se repete: "Preço
+  // atual do produto 2"), type ("text", "money" ou "count"), placeholder,
+  // max (quantas letras cabem) e:
   //   arrow:  a seta "→" antes do campo ("Preço atual → Novo preço")
   //   result: um resultado. A folha não faz conta nenhuma: o aluno calcula
   //           no sistema de cálculo da Financial Experts e escreve aqui. Os
@@ -28,9 +30,9 @@
       kind: "produto",
       fields: [
         { id: p + "produto", label: "Produto " + n, type: "text", placeholder: "Ex.: " + ex },
-        { id: p + "marca", label: "Nova marca", type: "text", placeholder: "A marca mais barata" },
-        { id: p + "atual", label: "Preço atual", type: "money" },
-        { id: p + "novo", label: "Novo preço", type: "money", arrow: true }
+        { id: p + "marca", label: "Nova marca", sr: "do produto " + n, type: "text", placeholder: "A marca mais barata" },
+        { id: p + "atual", label: "Preço atual", sr: "do produto " + n, type: "money" },
+        { id: p + "novo", label: "Novo preço", sr: "do produto " + n, type: "money", arrow: true }
       ]
     };
   }

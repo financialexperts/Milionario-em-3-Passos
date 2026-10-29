@@ -4,14 +4,13 @@
   // A máscara das células de valor, enquanto o aluno digita um número: os
   // pontos de milhar entram sozinhos ("1800" vira "1.800"), a vírgula separa
   // os centavos e ficam no máximo 2 casas depois dela. Ao sair da célula, o
-  // número se completa ("1.800,00"): isso é o planner-view.js, com o
-  // Format.plain.
+  // número se completa ("1.800,00"): isso é o sheet-view.js, com o
+  // Format.plain. (A mesma máscara da Teoria das caixas.)
   //
-  // Numa conta ("=4500*40%", "3800*50/100"), a máscara não mexe: com
-  // qualquer coisa que não seja número, o texto fica como o aluno escreveu.
-  // Também não mexe enquanto não dá pra saber o que um ponto é: "1.8" pode
-  // ser o começo de "1.800" ou um decimal escrito com ponto (o Parse lê os
-  // dois). Não toca no DOM.
+  // Com qualquer coisa que não seja número, a máscara não mexe (aqui o
+  // sheet-view.js já tira as letras antes). Também não mexe enquanto não dá
+  // pra saber o que um ponto é: "1.8" pode ser o começo de "1.800" ou um
+  // decimal escrito com ponto (o Parse lê os dois). Não toca no DOM.
 
   // O texto com a máscara, ou null quando ela não mexe. deleting diz se o
   // aluno está apagando: aí os pontos são os da própria máscara, e o número
