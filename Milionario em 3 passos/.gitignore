@@ -8,6 +8,6 @@ Thumbs.db
 _*.html
 _*.js
 
-# configurações de editor
+# configurações de desenvolvedor
 .vscode/
 .idea/
