@@ -172,9 +172,17 @@
   .savestate{margin-left:0}
 }
 @media (max-width:560px){
+  /* o título da folha ao lado do quadrinho, e o aviso de onde ela está
+     guardada embaixo dele */
+  .sim__head > div{flex-basis:calc(100% - 60px)}
+  .savestate{margin-left:54px}
   .frow--2,.frow--resultado{grid-template-columns:minmax(0,1fr)}
-  .frow--produto{grid-template-areas:"produto produto produto" "marca marca marca" "atual seta novo"}
+  .frow--produto{grid-template-areas:"produto produto produto" "marca marca marca" "atual seta novo";column-gap:6px}
   .farrow{width:14px;font-size:16px}
+  /* os dois preços lado a lado: menos espaço em volta, pra o número caber */
+  .fbox__pre{padding-left:9px}
+  .fbox__input{padding:0 6px}
+  .fbox__mark{margin:0 9px 0 4px}
   .ffield--total .fbox{height:60px}
   .ffield--total .fbox__pre{padding-left:14px;font-size:16px}
   .ffield--total .fbox__mark{margin-right:14px}
