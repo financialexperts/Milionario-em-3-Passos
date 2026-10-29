@@ -161,7 +161,8 @@ button{font:inherit;color:inherit}
 .topbar{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface) 70%,transparent);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);position:sticky;top:0;z-index:20;box-shadow:0 1px 0 rgba(255,255,255,.5) inset}
 [data-theme="dark"] .topbar{box-shadow:0 1px 0 rgba(255,255,255,.06) inset}
 .topbar__in{display:flex;align-items:center;gap:14px;min-height:var(--topbar-h)}
-.brand{display:flex;align-items:center;gap:12px;flex:none;text-decoration:none;border-radius:8px;transition:opacity .15s}
+/* o padding em cima e embaixo só aumenta a área de toque (36px) */
+.brand{display:flex;align-items:center;gap:12px;flex:none;padding:5px 0;text-decoration:none;border-radius:8px;transition:opacity .15s}
 .brand:hover{opacity:.8}
 .brand__logo{height:26px;width:auto;flex:none;display:block}
 [data-theme="light"] .brand__logo--dark{display:none}
@@ -218,6 +219,8 @@ button{font:inherit;color:inherit}
 .ok.is-on{display:flex}
 .ok::before{content:"";flex:none;width:12px;height:12px;background-color:currentColor;-webkit-mask:var(--icon-check) center/contain no-repeat;mask:var(--icon-check) center/contain no-repeat}
 .linklike{display:block;margin:14px auto 0;background:none;border:0;padding:2px;color:var(--accent-ink);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+/* na tela de toque, o "Esqueceu a senha?" com área maior, sem mudar de lugar */
+@media (pointer:coarse){.linklike{margin-top:4px;padding:10px 8px}}
 
 .auth{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:40px;align-items:center;padding:36px 0 60px;min-height:calc(100vh - 200px)}
 .auth__intro h1{margin-top:14px;font-size:clamp(28px,4.4vw,42px);line-height:1.08;max-width:14ch}
@@ -395,7 +398,7 @@ footer{margin-top:46px;border-top:1px solid var(--line);padding:22px 0 40px;font
 @media (max-width:560px){
   /* na barra do topo, o logo, o sair e o tema (o nome da folha já é o
      título da página) */
-  .brand{margin-right:auto;padding:5px 0}
+  .brand{margin-right:auto}
   .brand__sep,.topbar__title{display:none}
   /* metade da tela pra cada medidor: o rótulo fica com uma palavra só */
   .meter{padding:9px 10px}
