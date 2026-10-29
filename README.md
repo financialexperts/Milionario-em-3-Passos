@@ -45,20 +45,28 @@ A página abre numa tela de **Entrar / Criar conta**, a mesma da Teoria das caix
 - **Esqueceu a senha?** manda um link pro e-mail, que volta pra esta página.
 - **Sair** volta pra tela de entrar.
 
-### A tabela das folhas (rodar uma vez)
+### A tabela das folhas
 
-A folha de cada aluno fica na tabela **`worksheets`**, no mesmo Supabase: uma linha por aluno e por folha, separadas pela coluna `sheet` (aqui, `milionario-3-passos`), do mesmo jeito que a `game_scores` separa os jogos. Cada linha tem o aluno (`user_id`), o nome do login (`player_name`), o que ele escreveu (`data`: `{ "id do campo": "texto" }`) e quando mudou (`updated_at`). Cada aluno só lê, grava e apaga a própria folha (RLS).
+A folha de cada aluno fica na tabela **`worksheets`**, no mesmo Supabase (já criada): uma linha por aluno e por folha, separadas pela coluna `sheet` (aqui, `milionario-3-passos`), do mesmo jeito que a `game_scores` separa os jogos. Outra folha preenchível dos sistemas pode usar a mesma tabela, com outro nome em `sheet`.
 
-**A tabela ainda não existe no banco.** Para criar, abra o painel do Supabase → **SQL Editor** → **New query**, cole o arquivo [`backend/sql/worksheets.sql`](backend/sql/worksheets.sql) inteiro e clique em **Run**. Rodar de novo não estraga nada. Outra folha preenchível dos sistemas pode usar a mesma tabela, com outro nome em `sheet`.
+| Coluna | O que guarda |
+| --- | --- |
+| `user_id` | o aluno (a conta do login); com `sheet`, é a chave da linha |
+| `sheet` | qual folha (`milionario-3-passos`) |
+| `player_name` | o nome que o aluno cadastrou no login (pra achar no painel) |
+| `data` | o que o aluno escreveu: `{ "id do campo": "texto" }` (os ids estão no `backend/js/etapas.js`) |
+| `updated_at` | quando a folha mudou pela última vez |
 
-Sem a tabela (ou sem internet), a folha funciona igual: ela fica guardada só naquele navegador, e o aviso no alto diz **Salvo só neste navegador**. Quando a tabela existir, a folha vai pro banco na próxima mudança.
+Cada aluno só lê, grava e apaga a própria folha (RLS), e só quem está logado acessa a tabela.
+
+Sem acesso à tabela (ou sem internet), a folha funciona igual: ela fica guardada só naquele navegador, e o aviso no alto diz **Salvo só neste navegador** (com o motivo ao parar o mouse em cima). Quando o banco voltar, a folha vai pra ele ao abrir a página de novo.
 
 Como a folha é guardada:
 
 - Ela fica **no banco e no navegador**: abre na hora, sem esperar o banco. Ao abrir, vale a mais nova das duas (quem preencheu em outro computador vê a folha de lá).
 - A cada mudança, a folha vai pro banco um instante depois que o aluno para de digitar (e na hora, se ele fechar a página antes).
 
-Pra os links do e-mail (trocar a senha, confirmar a conta) voltarem pra este sistema, o endereço dele tem que estar em **Authentication → URL Configuration → Redirect URLs**, no painel do Supabase (no GitHub Pages, algo como `https://financialexperts.github.io/Milionario-em-3-passos/**`).
+Pra os links do e-mail (trocar a senha, confirmar a conta) voltarem pra este sistema, o endereço dele tem que estar em **Authentication → URL Configuration → Redirect URLs**, no painel do Supabase (no GitHub Pages, algo como `https://financialexperts.github.io/Milionario-em-3-Passos/**`).
 
 ---
 
@@ -91,7 +99,6 @@ frontend/
   js/sheet-app.js               liga tudo: abrir, imprimir e apagar
 backend/
   js/etapas.js                  as 3 etapas: títulos, campos, rótulos e exemplos
-  sql/worksheets.sql            a tabela das folhas no Supabase (rodar uma vez)
 ```
 
 Os arquivos em `backend/js/` não tocam no DOM: são só dados. O `sheet.js`, o `sync.js`, o `parse.js` e o `mask.js` também não: são eles que guardam o que o aluno escreveu; a tela só lê deles.
@@ -111,7 +118,7 @@ Os ícones se mexem quando o mouse passa, quando o aluno toca neles ou quando re
 | Os desenhos das etapas | `troca`, `hamburguer` e `assinatura`, no `frontend/js/icons.js` |
 | O aviso de onde a folha está guardada | `STATUS`, no `frontend/js/sheet-view.js` |
 | A folha impressa | `sheetHTML()`, no `frontend/js/sheet-view.js`, e o fim do `frontend/css/passos.css` |
-| A tabela e o nome da folha no banco | `TABLE` e `SHEET`, no `frontend/js/sync.js` (e o `backend/sql/worksheets.sql`) |
+| A tabela e o nome da folha no banco | `TABLE` e `SHEET`, no `frontend/js/sync.js` |
 | Quanto esperar depois da última tecla pra mandar pro banco | `WAIT`, no `frontend/js/sync.js` |
 | **Login:** o projeto Supabase | `frontend/js/config.js` |
 | Os textos da tela de entrar e as mensagens de erro | `markup()` e `friendlyError()`, no `frontend/js/auth.js` |

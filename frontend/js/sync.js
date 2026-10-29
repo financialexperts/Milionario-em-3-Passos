@@ -6,8 +6,8 @@
   // Guarda a folha do aluno no Supabase do login (o mesmo do Fluxo de Caixa
   // e da Teoria das caixas), na tabela worksheets: uma linha por aluno e por
   // folha, como a game_scores dos jogos. A coluna sheet separa as folhas:
-  // aqui é "milionario-3-passos". O SQL da tabela está em
-  // backend/sql/worksheets.sql.
+  // aqui é "milionario-3-passos". A tabela já está criada no Supabase (o
+  // README diz como ela é).
   //
   // A folha também fica no navegador (sheet.js): ela abre na hora, sem
   // esperar o banco. Ao abrir, vale a mais nova das duas; a cada mudança, a
@@ -40,10 +40,10 @@
   function errorText(err) {
     var msg = (err && (err.message || err.code)) || "";
     if (/relation .* does not exist|42P01|could not find the table|schema cache/i.test(msg)) {
-      return "Falta criar a tabela worksheets no Supabase (backend/sql/worksheets.sql).";
+      return "A tabela worksheets não foi encontrada no Supabase.";
     }
     if (/permission denied|42501|row-level security/i.test(msg + " " + (err && err.code))) {
-      return "A tabela worksheets ainda não tem permissão para quem está logado: falta rodar o backend/sql/worksheets.sql no Supabase.";
+      return "A tabela worksheets não tem permissão para quem está logado, no Supabase.";
     }
     if (/failed to fetch|network/i.test(msg)) return "Sem conexão com o servidor agora.";
     return "Não deu para guardar no banco agora." + (msg ? " (Detalhe: " + msg + ")" : "");
