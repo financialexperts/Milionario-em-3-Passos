@@ -125,8 +125,7 @@ button{font:inherit;color:inherit}
 /* um valor ("R$ 120,00", "3 meses") nunca quebra no meio */
 .nw{white-space:nowrap}
 
-/* a largura da página: o jogo (game.css) muda o --wrap pra ocupar mais do
-   computador */
+/* a largura da página (o --wrap muda ela numa página só) */
 .wrap{max-width:var(--wrap,1080px);margin:0 auto;padding:0 20px}
 
 /* ---------- Liquid glass ---------- */
@@ -177,7 +176,7 @@ button{font:inherit;color:inherit}
 /* ---------- Login (o mesmo do Fluxo de Caixa) ---------- */
 /* Carregando, o aviso de quando o login não funciona e a tela de entrar /
    criar conta / esqueci a senha. As abas de entrar e criar conta são
-   .authtabs/.authtab (aqui .tabs são as abas do topo). */
+   .authtabs/.authtab, como na Teoria das caixas. */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:120px 0;color:var(--muted);font-size:14px}
 .spinner{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent-ink);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
