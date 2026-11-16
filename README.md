@@ -46,6 +46,7 @@ A página não tem botão de imprimir. Quem imprimir pelo menu do navegador (Ctr
 A página abre numa tela de **Entrar / Criar conta**, a mesma da Teoria das caixas e do Fluxo de Caixa, e com o **mesmo banco**: o projeto Supabase `xorqsuqjmvkyzgagdxfz`, em [`frontend/js/config.js`](frontend/js/config.js). Quem já tem conta lá entra com o mesmo e-mail e a mesma senha, e quem cria a conta aqui também pode usar ela lá. A folha só aparece depois que o aluno entra. No alto, ficam o nome dele e o botão **Sair**.
 
 - **Criar conta** pede o nome completo, o e-mail e uma senha de pelo menos 6 caracteres. O nome vai pros dados do login e pra tabela `profiles` (a mesma dos outros sistemas).
+- **Continuar com o Google**, no alto de Entrar e de Criar conta, entra com a conta do Google, sem senha. Quem ainda não tem conta ganha uma na hora, com o nome do Google (que também vai pra `profiles`), e quem já tem conta com o mesmo e-mail entra nela mesma.
 - **Esqueceu a senha?** manda um link pro e-mail, que volta pra esta página.
 - **Sair** volta pra tela de entrar.
 
@@ -72,6 +73,8 @@ Como a folha é guardada:
 
 Pra os links do e-mail (trocar a senha, confirmar a conta) voltarem pra este sistema, o endereço dele tem que estar em **Authentication → URL Configuration → Redirect URLs**, no painel do Supabase (no GitHub Pages, algo como `https://financialexperts.github.io/Milionario-em-3-Passos/**`).
 
+O **Continuar com o Google** volta pelo mesmo endereço, então também depende dessa lista. E o Google precisa estar ligado em **Authentication → Sign In / Providers → Google**, com o Client ID e o Client Secret de um cliente OAuth do Google Cloud (que tem que ter `https://xorqsuqjmvkyzgagdxfz.supabase.co/auth/v1/callback` em *URIs de redirecionamento autorizados*). Enquanto ele estiver desligado, o botão só avisa que o login com o Google ainda não está disponível.
+
 ---
 
 ## Estrutura de arquivos
@@ -87,6 +90,7 @@ frontend/
   js/config.js                  o projeto Supabase do login (o mesmo dos outros sistemas)
   js/supabaseClient.js          liga o cliente do Supabase
   js/auth.js                    a tela de entrar / criar conta / esqueci a senha
+  js/google-auth.js             o botão "Continuar com o Google" (a mesma cópia em todos os sistemas)
   js/session.js                 o login: qual tela aparece, quem entrou, o botão de sair;
                                 a folha só começa depois dele
   js/ui.js                      tema claro/escuro, o brilho do vidro e as animações dos
