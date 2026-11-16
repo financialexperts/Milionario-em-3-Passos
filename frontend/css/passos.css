@@ -159,7 +159,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
    caixa grande, com a soma do que as 3 etapas viram até os 65 anos. */
 .ptotal{margin-top:20px;overflow:hidden;border-color:color-mix(in srgb,var(--accent-ink) 40%,var(--line))}
 .ptotal__bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 18px;background:linear-gradient(90deg,#272259,#3A338A);font-family:var(--ff-display);font-weight:700;font-size:16px;letter-spacing:.06em;line-height:1.3;text-align:center;text-transform:uppercase;color:#fff}
-[data-theme="dark"] .ptotal__bar{background:linear-gradient(90deg,#2A2860,#3B3878)}
+[data-theme="dark"] .ptotal__bar{background:linear-gradient(90deg,var(--line),var(--line-strong))}
 .ptotal__bar .ico{flex:none;width:20px;height:20px;color:#3CEFA2}
 .ptotal__body{display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 22px 20px;background:color-mix(in srgb,var(--accent-ink) 5%,var(--surface))}
 .ffield--total{width:min(100%,440px)}
