@@ -23,6 +23,13 @@
     return fmtPct.format(v || 0);
   }
 
+  // a taxa do período, com as 4 casas que a Calculadora Financeira aceita:
+  // 0.007974 vira "0,7974%"
+  var fmtRate = new Intl.NumberFormat("pt-BR", { style: "percent", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+  function rate(v) {
+    return fmtRate.format(v || 0);
+  }
+
   /* ============ meses ============ */
   var MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
     "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -48,6 +55,7 @@
     plain: plain,
     money: money,
     percent: percent,
+    rate: rate,
     monthYear: monthYear,
     thisMonth: thisMonth,
     esc: esc

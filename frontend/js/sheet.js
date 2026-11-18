@@ -5,8 +5,8 @@
 
   // O estado da folha "Se torne um milionário em 3 passos": o que o aluno
   // escreveu em cada campo. Não toca no DOM e não faz conta nenhuma: só
-  // guarda o que o aluno escreve (o valor até os 65 anos sai disso, no
-  // juros.js, e não fica guardado). Aqui ficam também o que já foi
+  // guarda o que o aluno escreve (as economias e o valor até os 65 anos
+  // saem disso, no etapas.js e no juros.js, e não ficam guardados). Aqui ficam também o que já foi
   // preenchido (pras marcas de preenchido e os medidores) e o guardar no
   // navegador; o guardar no banco é o sync.js.
   //
@@ -32,6 +32,13 @@
   function clean(src) {
     var out = {};
     if (!src || typeof src !== "object") return out;
+    // as folhas de antes guardavam quanto faltava pros 65 anos ("anos_65");
+    // agora a folha pede a idade e faz a conta: uma vira a outra
+    var faltava = parseInt(src.anos_65, 10);
+    if (!src[Etapas.idade.id] && faltava > 0 && faltava < Etapas.limite) {
+      src = Object.assign({}, src);
+      src[Etapas.idade.id] = String(Etapas.limite - faltava);
+    }
     Etapas.allIds().forEach(function (id) {
       var v = src[id];
       if (typeof v !== "string" && typeof v !== "number") return;

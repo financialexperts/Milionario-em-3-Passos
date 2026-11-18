@@ -53,7 +53,7 @@
 /* ---------- Até os 65 anos ---------- */
 /* Antes das etapas: o que é o prazo, e ao lado quanto falta e a taxa (no
    celular, um embaixo do outro). */
-.pprazo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);align-items:center;gap:16px 28px;margin-bottom:16px;padding:20px 22px;border-top:4px solid var(--amber)}
+.pprazo{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:16px 28px;margin-bottom:16px;padding:20px 22px;border-top:4px solid var(--amber)}
 .pprazo__title{font-size:clamp(19px,2.2vw,22px);line-height:1.2}
 .pprazo__lead{margin-top:4px;max-width:58ch;font-size:14.5px;line-height:1.55;color:var(--ink-soft)}
 
@@ -87,6 +87,7 @@
 .frow{display:grid;align-items:end;gap:12px}
 .frow--1{grid-template-columns:minmax(0,1fr)}
 .frow--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.frow--3{grid-template-columns:repeat(3,minmax(0,1fr))}
 /* um valor e um texto lado a lado ("Valor mensal atual" e "Possível
    alternativa"): o texto fica com mais espaço (no celular, um embaixo do
    outro) */
@@ -115,6 +116,10 @@
 .frow--resultado{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:2px;padding:12px 14px 14px;border:1px solid color-mix(in srgb,var(--accent-ink) 30%,var(--line));border-radius:14px;background:color-mix(in srgb,var(--accent-ink) 6%,var(--surface))}
 .frow__kicker{grid-column:1 / -1;display:flex;align-items:center;gap:7px;font-family:var(--ff-mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;line-height:1.4;text-transform:uppercase;color:var(--accent-ink)}
 .frow__kicker .ico{flex:none;width:15px;height:15px}
+/* a conta por extenso, embaixo do produto e dos resultados: de onde o
+   número saiu (o sheet-view.js escreve; some quando não tem conta) */
+.frow__nota{grid-column:1 / -1;margin-top:-2px;font-family:var(--ff-mono);font-size:12px;line-height:1.5;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.frow__nota[hidden]{display:none}
 
 .ffield{min-width:0}
 .ffield__label{display:flex;align-items:center;gap:6px;margin-bottom:5px;font-size:13px;font-weight:600;line-height:1.3;color:var(--ink)}
@@ -206,6 +211,9 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .sim__head > div{flex-basis:calc(100% - 60px)}
   .savestate{margin-left:54px}
   .frow--2,.frow--resultado{grid-template-columns:minmax(0,1fr)}
+  /* 3 campos: os 2 primeiros lado a lado, o terceiro embaixo */
+  .frow--3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .frow--3 > :nth-child(3){grid-column:1 / -1}
   /* o nome sozinho em cima; a marca e o consumo lado a lado; os preços
      embaixo */
   .frow--produto{grid-template-areas:"produto produto produto produto produto produto produto" "marca marca marca marca marca consumo consumo" "atual atual atual seta novo novo novo";column-gap:4px}
@@ -255,6 +263,7 @@ textarea.fbox__input{display:block;height:auto;padding:10px;line-height:1.3;resi
   .psheet__prazo .psheet__label{flex:none}
   .psheet__prazo .psheet__fill{flex:1;margin-top:0}
   .psheet__row--2,.psheet__row--resultado{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .psheet__row--3{grid-template-columns:repeat(3,minmax(0,1fr))}
   .psheet__field{min-width:0}
   .psheet__label{font-size:8.5pt;font-weight:600;line-height:1.25}
   .psheet__label span{font-weight:400}

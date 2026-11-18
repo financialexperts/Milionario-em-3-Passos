@@ -9,13 +9,13 @@
   var Icons = global.Icons;
   var Juros = global.Juros;
 
-  // A folha "Se torne um milionário em 3 passos" na tela: o prazo até os 65
-  // anos, as 3 etapas, cada uma com os campos da folha, e o valor total
-  // economizado no fim. Cada campo ganha a marca de preenchido, e os
-  // medidores do alto contam as etapas completas e os campos preenchidos.
-  // A única conta é a dos 65 anos: a economia mensal que o aluno escreve em
-  // cada etapa vira um aporte, investido à taxa da folha até lá (juros.js),
-  // e o total soma as 3.
+  // A folha "Se torne um milionário em 3 passos" na tela: a idade (e quanto
+  // falta pros 65 anos), as 3 etapas, cada uma com os campos da folha, e o
+  // valor total economizado no fim. Cada campo ganha a marca de preenchido,
+  // e os medidores do alto contam as etapas completas e os campos
+  // preenchidos. As contas são todas automáticas, a cada tecla: a economia
+  // mensal de cada etapa (etapas.js) vira um aporte, investido à taxa da
+  // folha até os 65 anos (juros.js), e o total soma as 3.
   //
   // Os campos são montados uma vez (e de novo só quando a folha inteira
   // muda: apagar, ou a versão do banco entrando); o resto só é atualizado,
@@ -57,43 +57,51 @@
       "</div>";
   }
 
-  // O que a folha calcula (o valor até os 65 anos) ou só mostra (a taxa):
-  // a caixa do jeito das outras, mas sem campo e sem a marca de preenchido.
-  // O valor até os 65 anos é escrito pelo syncContas().
+  // O que a folha calcula (a economia mensal, o valor até os 65 anos, o
+  // prazo) ou só mostra (a taxa): a caixa do jeito das outras, mas sem campo
+  // e sem a marca de preenchido. Os valores são escritos pelo syncContas().
   function calcHTML(c) {
-    return '<div class="ffield ffield--calc"' + (c.id ? ' data-calc="' + c.id + '"' : "") + ">" +
-      '<p class="ffield__label">' + (c.icon ? Icons.svg(c.icon) : "") + "<span>" + Format.esc(c.label) + "</span></p>" +
+    return '<div class="ffield ffield--calc"' + (c.id ? ' data-calc="' + c.id + '"' : "") + ' aria-live="polite">' +
+      '<p class="ffield__label">' + (c.icon ? Icons.svg(c.icon) : "") + "<span>" + Format.esc(c.label) +
+        (c.hint ? ' <span class="ffield__hint">' + Format.esc(c.hint) + "</span>" : "") + "</span></p>" +
       '<div class="fbox"><span class="fbox__out">' + Format.esc(c.value || "") + "</span></div>" +
       "</div>";
   }
 
   // Uma linha da folha. Nos produtos, a seta fica entre o preço atual e o
-  // novo; nos resultados, o aviso de que a economia mensal vira o aporte, e
-  // o valor até os 65 anos depois dela.
-  function rowHTML(row) {
+  // novo, e embaixo a conta da economia daquele produto; nos resultados, o
+  // aviso de que a economia mensal vira o aporte, as duas caixas calculadas
+  // e a conta por extenso (syncContas()).
+  function rowHTML(row, e) {
     return '<div class="frow frow--' + row.kind + (row.kind === "linha" ? " frow--" + row.fields.length : "") + '">' +
       (row.kind === "resultado"
-        ? '<p class="frow__kicker">' + Icons.svg("calculadora") + "A economia mensal vira um aporte, investido a " + taxa() + " ao ano</p>"
+        ? '<p class="frow__kicker">' + Icons.svg("calculadora") + "Calculado sozinho: a economia mensal vira um aporte, investido a " + taxa() + " ao ano</p>"
         : "") +
       row.fields.map(function (f) {
         return (f.arrow ? '<span class="farrow" aria-hidden="true">→</span>' : "") + fieldHTML(f);
       }).join("") +
-      (row.calc ? calcHTML(row.calc) : "") +
+      (row.calcs ? row.calcs.map(calcHTML).join("") : "") +
+      (row.produto ? '<p class="frow__nota" data-produto="' + row.produto + '" hidden></p>' : "") +
+      (row.kind === "resultado" ? '<p class="frow__nota" data-conta="' + e.key + '" hidden></p>' : "") +
       "</div>";
   }
 
-  // o prazo, antes das etapas: quanto falta pros 65 anos e a taxa dos aportes
+  // o prazo, antes das etapas: a idade, quanto falta pros 65 anos (em anos e
+  // em meses, os períodos da conta) e a taxa dos aportes (ao mês, a do
+  // período)
   function prazoHTML() {
     return '<div class="pprazo__head head">' +
         Icons.tile("relogio", "amber") +
         "<div>" +
-          '<h3 class="pprazo__title" id="pprazo-title">Até os 65 anos</h3>' +
-          '<p class="pprazo__lead">A economia mensal de cada etapa vira um aporte mensal: o dinheiro que você investe todo mês, a ' + taxa() + " ao ano, até fazer 65 anos.</p>" +
+          '<h3 class="pprazo__title" id="pprazo-title">Até os ' + Etapas.limite + " anos</h3>" +
+          '<p class="pprazo__lead">A economia mensal de cada etapa vira um aporte mensal: o dinheiro que você investe todo mês, a ' + taxa() +
+            " ao ano (" + taxaMes() + " ao mês, a taxa equivalente em juros compostos), até fazer " + Etapas.limite + " anos.</p>" +
         "</div>" +
       "</div>" +
-      '<div class="frow frow--2">' +
-        fieldHTML(Etapas.prazo) +
-        calcHTML({ label: "Taxa de juros", value: taxa() + " ao ano" }) +
+      '<div class="frow frow--3">' +
+        fieldHTML(Etapas.idade) +
+        calcHTML({ id: "prazo", label: "Tempo investido" }) +
+        calcHTML({ label: "Taxa de juros", hint: "(" + taxa() + " ao ano)", value: taxaMes() + " ao mês" }) +
       "</div>";
   }
 
@@ -113,7 +121,7 @@
           "</div>" +
           '<p class="etapa__count" data-count></p>' +
         "</div>" +
-        '<div class="frows">' + e.rows.map(rowHTML).join("") + "</div>" +
+        '<div class="frows">' + e.rows.map(function (row) { return rowHTML(row, e); }).join("") + "</div>" +
       "</div>" +
       "</section>";
   }
@@ -167,33 +175,53 @@
   }
 
   /* ============ as contas ============ */
-  // a taxa da folha, pros textos: "10%"
+  // a taxa da folha, pros textos: "10%"; e a do período (o mês), do jeito
+  // que se digita na Calculadora Financeira: "0,7974%"
   function taxa() { return Format.percent(Etapas.taxa); }
+  function taxaMes() { return Format.rate(Juros.aoMes(Etapas.taxa)); }
 
   function anos(n) { return n + (n === 1 ? " ano" : " anos"); }
+  function meses(n) { return Format.plain(n).replace(/,00$/, "") + (n === 1 ? " mês" : " meses"); }
 
-  // quanto falta pros 65 anos, ou null enquanto o aluno não escreveu
+  // o número de um campo, ou null enquanto ele está vazio: dinheiro com o
+  // Parse, os de contar ("vezes", "un.", a idade) com algarismos só
+  function num(id) {
+    var f = Etapas.field(id);
+    var v = Sheet.get(id).trim();
+    if (!f || !v) return null;
+    if (f.type === "money") return Parse.money(v);
+    var n = parseInt(v, 10);
+    return isNaN(n) ? null : n;
+  }
+
+  // quanto falta pros 65 anos, pela idade: { anos } ou { falta }
   function prazo() {
-    var v = Sheet.get(Etapas.prazo.id).trim();
-    return v ? parseInt(v, 10) : null;
+    var idade = num(Etapas.idade.id);
+    if (idade === null) return { anos: null, falta: "Escreva a sua idade" };
+    var n = Etapas.limite - idade;
+    if (n <= 0) return { anos: null, falta: "Com " + Etapas.limite + " anos ou mais, não sobra tempo de investir" };
+    return { anos: n };
   }
 
-  // A conta de uma etapa: a economia mensal (o aporte) e quanto ela vira em
-  // n anos. valor fica null enquanto falta alguma coisa, e falta diz o quê.
-  function contaDe(e, n) {
-    var aporte = Parse.money(Sheet.get(e.calc.from));
-    if (aporte === null) return { aporte: null, valor: null, falta: "Escreva a economia mensal" };
-    if (n === null) return { aporte: aporte, valor: null, falta: "Escreva quanto falta para os 65 anos" };
-    return { aporte: aporte, valor: Juros.futuro(aporte, n, Etapas.taxa) };
+  // A conta de uma etapa: a economia mensal (o aporte, etapas.js) e quanto
+  // ela vira até os 65 anos. valor fica null enquanto falta alguma coisa, e
+  // falta diz o quê.
+  function contaDe(e, p) {
+    var eco = e.economia(num);
+    var out = { aporte: eco.valor, falta: eco.falta, conta: eco.conta || "", valor: null };
+    if (eco.valor === null) out.faltaValor = eco.falta;
+    else if (p.anos === null) out.faltaValor = p.falta;
+    else out.valor = Juros.futuro(eco.valor, p.anos, Etapas.taxa);
+    return out;
   }
 
-  // As contas da folha inteira: a de cada etapa (de) e o total, que soma as
-  // etapas que já têm a economia mensal (soma, até os 65; aportes, por mês).
+  // As contas da folha inteira: o prazo, a de cada etapa (de) e o total, que
+  // soma as etapas que já têm a economia (soma, até os 65; aportes, por mês).
   function contas() {
-    var n = prazo();
-    var out = { n: n, de: {}, soma: 0, aportes: 0, pronto: false };
+    var p = prazo();
+    var out = { p: p, de: {}, soma: 0, aportes: 0, pronto: false };
     Etapas.list.forEach(function (e) {
-      var c = contaDe(e, n);
+      var c = contaDe(e, p);
       out.de[e.key] = c;
       if (c.aporte !== null) out.aportes += c.aporte;
       if (c.valor !== null) { out.soma += c.valor; out.pronto = true; }
@@ -203,21 +231,43 @@
 
   // escreve o valor na caixa, ou o que falta pra ele aparecer
   function setCalc(box, valor, falta) {
+    if (!box) return;
     box.classList.toggle("is-empty", valor === null);
-    box.querySelector(".fbox__out").innerHTML = Format.esc(valor === null ? falta : Format.money(valor));
+    box.querySelector(".fbox__out").innerHTML = Format.esc(valor === null ? falta : valor);
+  }
+
+  // a conta por extenso embaixo de uma linha (some quando não tem)
+  function setNota(p, text) {
+    if (!p) return;
+    p.hidden = !text;
+    p.innerHTML = Format.esc(text || "");
   }
 
   function syncContas() {
     var c = contas();
+    setCalc(prazoBox.querySelector('[data-calc="prazo"]'),
+      c.p.anos === null ? null : anos(c.p.anos) + " · " + meses(Juros.meses(c.p.anos)), c.p.falta);
     Etapas.list.forEach(function (e) {
       var d = c.de[e.key];
-      setCalc(root.querySelector('[data-calc="' + e.calc.id + '"]'), d.valor, d.falta);
+      setCalc(root.querySelector('[data-calc="' + e.calc.mensal + '"]'), d.aporte === null ? null : Format.money(d.aporte), d.falta);
+      setCalc(root.querySelector('[data-calc="' + e.calc.valor + '"]'), d.valor === null ? null : Format.money(d.valor), d.faltaValor);
+      var nota = d.conta;
+      if (d.valor !== null) {
+        nota = (nota ? nota + ". " : "") + "Investido: " + Format.money(d.aporte) + " por mês, a " + taxaMes() +
+          " ao mês, por " + meses(Juros.meses(c.p.anos)) + " = " + Format.money(d.valor) + ".";
+      }
+      setNota(root.querySelector('[data-conta="' + e.key + '"]'), nota);
     });
-    setCalc(totalBox.querySelector('[data-calc="total"]'), c.pronto ? c.soma : null,
-      c.n === null ? "Escreva quanto falta para os 65 anos" : "Escreva a economia mensal das etapas");
+    [1, 2, 3].forEach(function (k) {
+      var pr = Etapas.economiaProduto(num, k);
+      setNota(root.querySelector('[data-produto="' + k + '"]'), pr.vazio ? "" : "Economia do produto " + k + ": " + (pr.valor === null ? pr.falta : pr.conta));
+    });
+    setCalc(totalBox.querySelector('[data-calc="total"]'), c.pronto ? Format.money(c.soma) : null,
+      c.p.anos === null ? c.p.falta : "Preencha as etapas para ver o total");
     totalBox.querySelector("[data-calc-sub]").innerHTML = Format.esc(c.pronto
-      ? "Aporte de " + Format.money(c.aportes) + " por mês (a soma das economias mensais), investido a " + taxa() + " ao ano por " + anos(c.n) + "."
-      : "A soma do que as 3 etapas viram até os 65 anos, com a economia mensal de cada uma investida a " + taxa() + " ao ano.");
+      ? "Aporte de " + Format.money(c.aportes) + " por mês (a soma das economias mensais), investido a " + taxa() + " ao ano (" + taxaMes() +
+        " ao mês) por " + anos(c.p.anos) + " (" + meses(Juros.meses(c.p.anos)) + "). Sem juros, seriam " + Format.money(c.aportes * Juros.meses(c.p.anos)) + "."
+      : "A soma do que as 3 etapas viram até os " + Etapas.limite + " anos, com a economia mensal de cada uma investida a " + taxa() + " ao ano.");
   }
 
   function sync() {
@@ -281,11 +331,14 @@
     return '<h1 class="psheet__title">Se torne um milionário<br>em 3 passos</h1>' +
       '<p class="psheet__who">' + (name ? "<strong>" + Format.esc(name) + "</strong> · " : "") +
         "Feito em " + Format.esc(Format.monthYear(Format.thisMonth())) + "</p>" +
-      '<div class="psheet__row psheet__row--2 psheet__prazo">' +
-        sheetField(Etapas.prazo) + sheetCalc("Taxa de juros", taxa() + " ao ano") +
+      '<div class="psheet__row psheet__row--3 psheet__prazo">' +
+        sheetField(Etapas.idade) +
+        sheetCalc("Tempo investido", c.p.anos === null ? "" : anos(c.p.anos) + " (" + meses(Juros.meses(c.p.anos)) + ")") +
+        sheetCalc("Taxa de juros", taxa() + " a.a. = " + taxaMes() + " a.m.") +
       "</div>" +
       Etapas.list.map(function (e) {
-        var valor = c.de[e.key].valor;
+        var d = c.de[e.key];
+        var calcs = [d.aporte === null ? "" : Format.money(d.aporte), d.valor === null ? "" : Format.money(d.valor)];
         return '<section class="psheet__etapa">' +
           '<div class="psheet__side">' +
             '<p class="psheet__kicker">Etapa ' + e.num + ":</p>" +
@@ -297,7 +350,7 @@
             e.rows.map(function (row) {
               return '<div class="psheet__row psheet__row--' + row.kind + (row.kind === "linha" ? " psheet__row--" + row.fields.length : "") + '">' +
                 row.fields.map(sheetField).join("") +
-                (row.calc ? sheetCalc(row.calc.label, valor === null ? "" : Format.money(valor)) : "") +
+                (row.calcs ? row.calcs.map(function (k, i) { return sheetCalc(k.label, calcs[i]); }).join("") : "") +
                 "</div>";
             }).join("") +
           "</div>" +

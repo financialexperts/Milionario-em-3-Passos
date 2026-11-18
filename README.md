@@ -1,8 +1,8 @@
 # Milionário em 3 passos
 
-A folha **"Se torne um milionário em 3 passos"** para o aluno preencher, na tela, com os números dele: trocar uma marca, diminuir um hábito e diminuir um gasto recorrente. Em cada etapa, o aluno chega à **economia mensal** e escreve na folha. Essa economia vira um **aporte mensal**, e a folha calcula quanto ele vira investido a **10% ao ano** até os **65 anos**. O valor total é a soma das 3 etapas.
+A folha **"Se torne um milionário em 3 passos"** para o aluno preencher, na tela, com os números dele: trocar uma marca, diminuir um hábito e diminuir um gasto recorrente. Tudo é calculado sozinho, enquanto o aluno digita: a **economia mensal** de cada etapa sai dos números que ele escreve, vira um **aporte mensal**, e a folha calcula quanto ele vira investido a **10% ao ano** até os **65 anos** (a mesma conta da Calculadora Financeira). O valor total é a soma das 3 etapas.
 
-- **A folha** (`index.html`): quanto falta pros 65 anos, as 3 etapas da folha original, cada uma num cartão, e o valor total economizado no fim. Veja [A folha](#a-folha).
+- **A folha** (`index.html`): a idade (e quanto falta pros 65 anos), as 3 etapas da folha original, cada uma num cartão, e o valor total economizado no fim. Veja [A folha](#a-folha).
 - **O login** é o mesmo da Teoria das caixas, do Fluxo de Caixa e das Escolhas da Vanessa e da Karine, com o mesmo banco (Supabase): quem já tem conta lá entra aqui com o mesmo e-mail e a mesma senha. O que o aluno escreve fica guardado na conta dele. Veja [O login e o banco](#o-login-e-o-banco).
 
 Não tem build nem instalação: é uma página `.html` + alguns arquivos `.js` e `.css` estáticos, na identidade visual da Financial Experts (a mesma da Teoria das caixas). Para rodar, basta publicar a pasta no GitHub Pages (ou abrir o `index.html` no navegador, com internet, por causa do login).
@@ -11,31 +11,37 @@ Não tem build nem instalação: é uma página `.html` + alguns arquivos `.js` 
 
 ## A folha
 
-1. **A abertura.** O título, o que fazer e, ao lado, as 3 etapas (cada uma leva até o cartão dela e ganha o selo verde quando fica completa). Embaixo, como preencher em 3 passos: quanto falta pros 65 anos, as etapas, com os preços de hoje, e as economias.
+1. **A abertura.** O título, o que fazer e, ao lado, as 3 etapas (cada uma leva até o cartão dela e ganha o selo verde quando fica completa). Embaixo, como preencher em 3 passos: a idade, as etapas, com os preços de hoje, e as economias (calculadas sozinhas).
 
-2. **Até os 65 anos.** Antes das etapas, o aluno escreve **quanto falta para os 65 anos** (em anos): é o tempo que os aportes ficam investidos. Do lado, a **taxa de juros**, fixa: 10% ao ano.
+2. **Até os 65 anos.** Antes das etapas, o aluno escreve a **idade**, e a folha calcula o **tempo investido** até os 65 anos, em anos e em meses (os períodos da conta). Do lado, a **taxa de juros**: 10% ao ano, que na conta mensal vira 0,7974% ao mês. (As folhas antigas, que guardavam "quanto falta pros 65 anos", viram a idade sozinhas ao abrir.)
 
 3. **As 3 etapas.** Um cartão por etapa, na cor dela, com a faixa da folha à esquerda ("Etapa 1", o número grande e o desenho) e os campos à direita, com os mesmos rótulos da folha original:
 
    | Etapa | Os campos |
    | --- | --- |
    | 1. Trocando uma marca (azul) | Produto, Nova marca, Consumo mensal (uma estimativa, em unidades), Preço atual → Novo preço (3 produtos) |
-   | 2. Diminuindo um hábito (dourada) | Hábito a reduzir, Frequência atual (por semana), Custo médio por ocorrência |
+   | 2. Diminuindo um hábito (dourada) | Hábito a reduzir, Frequência atual (por semana), Nova frequência (por semana), Custo médio por ocorrência |
    | 3. Diminuindo um gasto recorrente (roxa) | Gasto recorrente, Valor mensal atual, Possível alternativa / cancelamento |
 
-   Toda etapa termina com os **resultados**, em verde: a **Economia mensal**, que o aluno calcula e escreve (é o aporte mensal dele), e o **Investido até os 65 anos**, que a folha calcula. Enquanto falta a economia mensal ou o prazo, a caixa do valor diz o que falta.
+   Toda etapa termina com os **resultados**, em verde, calculados sozinhos a cada tecla: a **Economia mensal** (o aporte mensal) e o **Investido até os 65 anos**. Embaixo, a conta por extenso, pra o aluno ver de onde o número saiu. Enquanto falta alguma coisa, a caixa diz o quê.
 
-   Cada campo tem a marca de preenchido (o círculo da folha), que fica verde quando o aluno escreve alguma coisa. O cartão mostra quantos campos da etapa já foram preenchidos e, com todos, vira "Etapa completa". Ninguém confere se a economia mensal está certa: a folha só usa o que o aluno escreveu.
+   | Etapa | A economia mensal |
+   | --- | --- |
+   | 1. Trocando uma marca | a soma, nos produtos preenchidos, de consumo × (preço atual − novo preço); cada produto mostra a conta dele embaixo |
+   | 2. Diminuindo um hábito | (frequência atual − nova frequência) × custo por ocorrência × 4 semanas (`SEMANAS`) |
+   | 3. Diminuindo um gasto recorrente | o valor mensal atual inteiro (o gasto é cancelado) |
 
-   Nos campos de dinheiro, só entram números: os pontos de milhar aparecem sozinhos enquanto o aluno digita ("1800" vira "1.800") e, ao sair do campo, o número se completa ("1.800,00"). A frequência, o consumo e o prazo aceitam só algarismos.
+   Cada campo tem a marca de preenchido (o círculo da folha), que fica verde quando o aluno escreve alguma coisa. O cartão mostra quantos campos da etapa já foram preenchidos e, com todos, vira "Etapa completa".
+
+   Nos campos de dinheiro, só entram números: os pontos de milhar aparecem sozinhos enquanto o aluno digita ("1800" vira "1.800") e, ao sair do campo, o número se completa ("1.800,00"). A frequência, o consumo e a idade aceitam só algarismos.
 
 4. **O valor total economizado.** No pé da folha, como na original: a soma do que as 3 etapas viram até os 65 anos (das etapas que já têm a economia mensal), com o aporte total por mês embaixo.
 
-**A conta** (`frontend/js/juros.js`): a economia mensal de cada etapa é um aporte que entra no fim de cada mês, por todos os meses até os 65 anos (anos × 12). A taxa de 10% ao ano vira a equivalente ao mês, 0,797% (12 meses a 0,797% rendem os mesmos 10%). O valor é `aporte × ((1 + i)^n − 1) / i`, com `i` a taxa ao mês e `n` os meses. Por exemplo, R$ 100 por mês por 30 anos dão R$ 206.284,33. Os valores calculados não ficam guardados: saem de novo do que o aluno escreveu toda vez.
+**A conta** (`frontend/js/juros.js`) é a da Calculadora Financeira, com a função dela (`backend/js/finance.js`, cópia idêntica): juros compostos por período, com o aporte no fim de cada período, `VF = PMT × ((1 + i)^n − 1) / i`. O aporte é mensal, então o período é o mês: `n` = anos até os 65 × 12 e `i` = a taxa ao mês equivalente a 10% ao ano, `(1,10)^(1/12) − 1`, arredondada em 4 casas como a Calculadora Financeira aceita: **0,7974% ao mês**. Assim, digitando na Calculadora Financeira (01 Valor final) a taxa e os meses que a folha mostra, sai o mesmo valor, centavo por centavo. Por exemplo, R$ 100 por mês por 30 anos (0,7974% · 360 períodos · parcela R$ 100) dão **R$ 206.276,99** nas duas. Os valores calculados não ficam guardados: saem de novo do que o aluno escreveu toda vez.
 
-Enquanto o aluno preenche, dois medidores ficam grudados no alto: quantas etapas estão completas e quantos campos já foram preenchidos (são 25, contando o prazo). Ao lado do título "A sua folha", um aviso mostra onde ela está guardada: **Salvo na sua conta**, **Salvando…** ou **Salvo só neste navegador** (com o motivo ao parar o mouse em cima).
+Enquanto o aluno preenche, dois medidores ficam grudados no alto: quantas etapas estão completas e quantos campos já foram preenchidos (são 23, contando a idade). Ao lado do título "A sua folha", um aviso mostra onde ela está guardada: **Salvo na sua conta**, **Salvando…** ou **Salvo só neste navegador** (com o motivo ao parar o mouse em cima).
 
-A página não tem botão de imprimir. Quem imprimir pelo menu do navegador (Ctrl+P) recebe só a folha "Se torne um milionário em 3 passos", do jeito da original, numa página A4: o título, o nome do aluno e o mês, o prazo e a taxa, uma caixa por etapa (com o valor até os 65 anos) e o valor total no pé (com as cores do tema claro, mesmo com o tema escuro ligado).
+A página não tem botão de imprimir. Quem imprimir pelo menu do navegador (Ctrl+P) recebe só a folha "Se torne um milionário em 3 passos", do jeito da original, numa página A4: o título, o nome do aluno e o mês, a idade, o tempo investido e a taxa, uma caixa por etapa (com a economia mensal e o valor até os 65 anos) e o valor total no pé (com as cores do tema claro, mesmo com o tema escuro ligado).
 
 **Apagar a folha** apaga tudo (na conta e no navegador) e começa de novo (pergunta antes).
 
@@ -80,7 +86,7 @@ O **Continuar com o Google** volta pelo mesmo endereço, então também depende 
 ## Estrutura de arquivos
 
 ```
-index.html                      a folha: abertura, o prazo até os 65 anos, as 3 etapas,
+index.html                      a folha: abertura, a idade e o tempo até os 65 anos, as 3 etapas,
                                 o valor total e a folha impressa
 frontend/
   css/styles.css                o visual da Financial Experts (o mesmo da Teoria das
@@ -104,15 +110,17 @@ frontend/
   js/sheet.js                   o estado da folha: o que o aluno escreveu, o que já foi
                                 preenchido e o guardar no navegador
   js/sync.js                    o guardar no banco (tabela worksheets)
-  js/sheet-view.js              o prazo, as etapas, os campos, os valores até os 65 anos,
+  js/sheet-view.js              a idade, as etapas, os campos, as contas automáticas,
                                 os medidores e a folha impressa
   js/sheet-app.js               liga tudo: abrir e apagar
 backend/
-  js/etapas.js                  as 3 etapas (títulos, campos, rótulos e exemplos), o
-                                prazo e a taxa de juros
+  js/etapas.js                  as 3 etapas (títulos, campos, rótulos, exemplos e a
+                                conta da economia mensal de cada uma), a idade e a taxa
+  js/finance.js                 a conta de juros compostos (cópia idêntica da
+                                Calculadora Financeira)
 ```
 
-Os arquivos em `backend/js/` não tocam no DOM: são só dados. O `sheet.js`, o `sync.js`, o `parse.js`, o `mask.js` e o `juros.js` também não: os primeiros guardam o que o aluno escreveu e o `juros.js` faz a conta; a tela só lê deles.
+Os arquivos em `backend/js/` não tocam no DOM: são os dados e as contas. O `sheet.js`, o `sync.js`, o `parse.js`, o `mask.js` e o `juros.js` também não: os primeiros guardam o que o aluno escreveu e o `juros.js` faz a conta; a tela só lê deles.
 
 Os ícones se mexem quando o mouse passa, quando o aluno toca neles ou quando recebem o foco do teclado. Quem pede menos movimento no sistema operacional não vê animação nenhuma.
 
@@ -125,8 +133,9 @@ Os ícones se mexem quando o mouse passa, quando o aluno toca neles ou quando re
 | Os títulos, os rótulos, os exemplos e o texto de cada etapa | `LIST`, em `backend/js/etapas.js` |
 | Um campo a mais ou a menos | `rows` da etapa, em `backend/js/etapas.js` (o `id` de um campo que já existe não deve mudar: o que os alunos escreveram nele se perde) |
 | A taxa de juros (10% ao ano) | `TAXA`, em `backend/js/etapas.js` (os textos da página acompanham) |
-| O campo de quanto falta pros 65 anos | `PRAZO`, em `backend/js/etapas.js` |
-| A conta do valor até os 65 anos | `futuro()`, no `frontend/js/juros.js` |
+| O campo da idade e a idade final (65) | `IDADE` e `LIMITE`, em `backend/js/etapas.js` |
+| A conta da economia mensal de cada etapa | `economiaMarca()`, `economiaHabito()` e `economiaGasto()`, em `backend/js/etapas.js` (as semanas do mês: `SEMANAS`) |
+| A conta do valor até os 65 anos | `futuro()` e `aoMes()`, no `frontend/js/juros.js` (a fórmula é a `futureValue()` do `backend/js/finance.js`; se ela mudar na Calculadora Financeira, copie de novo) |
 | O valor total | `TOTAL`, em `backend/js/etapas.js`, e `syncContas()`, no `frontend/js/sheet-view.js` |
 | As cores das etapas | `.etapa--1`, `.etapa--2` e `.etapa--3`, no começo do `frontend/css/passos.css` |
 | Os desenhos das etapas | `troca`, `hamburguer` e `assinatura`, no `frontend/js/icons.js` |
